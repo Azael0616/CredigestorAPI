@@ -1,6 +1,7 @@
 ﻿using CredigestorAPI.BLL.Interfaces;
 using CredigestorAPI.DAL.Interfaces;
 using CredigestorAPI.Models;
+using CredigestorAPI.Models.DTO;
 using CredigestorAPI.Models.Utils;
 
 namespace CredigestorAPI.BLL
@@ -92,6 +93,11 @@ namespace CredigestorAPI.BLL
 
             ResultadoBD _resultado = await _usuarioDAL.InsertarUsuario(_usuario);
             return _resultado;
+        }
+        public async Task<List<UsuarioDTO>> ObtenerUsuarios()
+        {
+            List<UsuarioDTO> _lista = await _usuarioDAL.ObtenerUsuarios();
+            return _lista;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CredigestorAPI.Models;
+using CredigestorAPI.Models.DTO;
 using CredigestorAPI.Models.Utils;
 
 namespace CredigestorAPI.BLL.Interfaces
@@ -6,5 +7,6 @@ namespace CredigestorAPI.BLL.Interfaces
     public interface IUsuarioBLL
     {
         Task<ResultadoBD> InsertarUsuario(Usuario usuario);
+        Task<List<UsuarioDTO>> ObtenerUsuarios();
     }
 }

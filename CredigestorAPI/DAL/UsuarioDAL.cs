@@ -1,5 +1,6 @@
 ﻿using CredigestorAPI.DAL.Interfaces;
 using CredigestorAPI.Models;
+using CredigestorAPI.Models.DTO;
 using CredigestorAPI.Models.Utils;
 using System.Data;
 namespace CredigestorAPI.DAL
@@ -69,6 +70,19 @@ namespace CredigestorAPI.DAL
                 _resultado.Code = 200;
                 return _resultado;
 #nullable enable
+            }
+        }
+        //Obtiene todos los usuarios actuales
+        public async Task<List<UsuarioDTO>> ObtenerUsuarios()
+        {
+            List<UsuarioDTO> _lista = new List<UsuarioDTO>();
+            DataTable dt = await _sqlAuxiliar.EjecutarTablaPA("Sp_Usuario_O_Todos", null);
+            if (dt == null)
+                return _lista;
+            else
+            {
+                _lista = UsuarioDTO.ObtenerListaDesdeTabla(dt);
+                return _lista;
             }
         }
     }

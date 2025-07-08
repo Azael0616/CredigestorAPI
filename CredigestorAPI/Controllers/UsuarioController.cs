@@ -1,5 +1,6 @@
 ﻿using CredigestorAPI.BLL.Interfaces;
 using CredigestorAPI.Models;
+using CredigestorAPI.Models.DTO;
 using CredigestorAPI.Models.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,13 +15,25 @@ namespace CredigestorAPI.Controllers
         {
             _usuarioBLL = usuarioBLL;
         }
-        [HttpGet("Prueba")]
-        public IActionResult Prueba()
+        [HttpGet("ObtenerUsuarios")]
+        public async Task<IActionResult> ObtenerUsuarios()
         {
-            return Ok("Endpoint de prueba en el controlador de Usuario");
+            try
+            {
+                List<UsuarioDTO> _lista = await _usuarioBLL.ObtenerUsuarios();
+                return StatusCode(200, _lista);
+            }
+            catch (HttpResponseException ex)
+            {
+                ResultadoBD _resultado = new ResultadoBD();
+                _resultado.ErrorDesc = ex.Mensaje;
+                _resultado.Icon = ex.Icono;
+                _resultado.Code = ex.Codigo;
+                return StatusCode(ex.Codigo, _resultado);
+            }            
         }
         [HttpPost("InsertarUsuario")]
-        public async Task<IActionResult> InsertarUsuario(Usuario _usuario)
+        public async Task<IActionResult> InsertarUsuario([FromBody] Usuario _usuario)
         {
             ResultadoBD _resultado = new ResultadoBD();
             //Se crea try catch
