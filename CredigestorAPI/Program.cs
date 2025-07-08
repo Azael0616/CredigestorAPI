@@ -1,5 +1,11 @@
+using CredigestorAPI.BLL;
+using CredigestorAPI.BLL.Interfaces;
+using CredigestorAPI.BLL.Utils;
+using CredigestorAPI.DAL;
 using CredigestorAPI.DAL.Interfaces;
 using CredigestorAPI.DAL.Utils;
+using CredigestorAPI.Models.Utils;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,11 +29,31 @@ builder.Services.AddCors(options =>
     });
 });
 // Obtener la cadena de conexión desde la configuración
-string? cadena_de_conexion = builder.Configuration.GetConnectionString("DefaultConnection");
+string cadena_de_conexion = builder.Configuration.GetConnectionString("DefaultConnection");
+//Información del swagger
+var config = builder.Configuration;
+var swaggerTitulo = config["Swagger:Titulo"] ?? "Credigestor API";
+var swaggerDescripcion = config["Swagger:Descripcion"] ?? "API por defecto";
+var swaggerVersion = config["Version"] ?? "Sin información";
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = swaggerTitulo,
+        Description = swaggerDescripcion,
+        Version = swaggerVersion        
+    });
+});
 
 // Registrar el conector de SQL
 builder.Services.AddSingleton<ISqlAuxiliar>(new SqlAuxiliar(cadena_de_conexion));
 
+//Registrar DAL
+builder.Services.AddScoped<IUsuarioDAL, UsuarioDAL>();
+
+//Registrar BLL
+builder.Services.AddScoped<IUsuarioUtils, UsuarioUtils>();
+builder.Services.AddScoped<IUsuarioBLL, UsuarioBLL>();
 #nullable restore
 var app = builder.Build();
 
@@ -50,6 +76,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
+app.UseMiddleware<ExcepcionMiddleware>(); //Manejo de errores
+
 app.MapControllers(); // Importante para que funcionen los controladores
+
+app.UseCors("CorsPolicy");
 
 app.Run();

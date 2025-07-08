@@ -12,7 +12,7 @@ namespace CredigestorAPI.DAL.Utils
             _cadena_de_conexion = cadena_de_conexion;
         }
         //Obtiene toda la tabla
-        public DataTable EjecutarTablaPA(string procedimientoAlmacenado, Dictionary<string, object>? parametros = null)
+        public async Task<DataTable> EjecutarTablaPA(string procedimientoAlmacenado, Dictionary<string, object>? parametros = null)
         {
             DataTable dt = new DataTable();
 
@@ -30,11 +30,11 @@ namespace CredigestorAPI.DAL.Utils
                         }
                     }
 
-                    conn.Open();
+                    await conn.OpenAsync();
 
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
-                        adapter.Fill(dt);
+                        dt.Load(reader);
                     }
                 }
             }
@@ -43,9 +43,9 @@ namespace CredigestorAPI.DAL.Utils
         }
         //Obtiene la primer fila
 #nullable disable
-        public DataRow EjecutarPrimeraFilaPA(string nombreProcedimiento, Dictionary<string, object> parametros)
+        public async Task<DataRow> EjecutarPrimeraFilaPA(string nombreProcedimiento, Dictionary<string, object> parametros)
         {
-            DataTable dt = EjecutarTablaPA(nombreProcedimiento, parametros);
+            DataTable dt = await EjecutarTablaPA(nombreProcedimiento, parametros);
 
             if (dt.Rows.Count == 0)
                 return null;

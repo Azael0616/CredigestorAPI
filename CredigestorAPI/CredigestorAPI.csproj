@@ -13,8 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="BLL\Interfaces\" />
-    <Folder Include="BLL\Utils\" />
     <Folder Include="Controllers\Utils\" />
     <Folder Include="Models\DTO\" />
   </ItemGroup>
