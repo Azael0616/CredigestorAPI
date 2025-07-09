@@ -105,20 +105,29 @@ namespace CredigestorAPI.BLL
             UsuarioLogin _usuarioLogin = _usuarioLogin = await _usuarioDAL.ObtenerUsuarioPorNombreUsuario(_usuario);  
             return _usuarioLogin;
         }
-        public async Task<UsuarioSesion> ObtenerUsuarioSesion(UsuarioLogin _usuario, IConfiguration _config)
+        public async Task<string> ObtenerToken(UsuarioLogin _usuario, IConfiguration _config)
         {
-            UsuarioSesion _usuarioSesion = new UsuarioSesion();
+            string token = "";
             UsuarioLogin _usuarioEncontrado = await _usuarioDAL.ObtenerUsuarioPorNombreUsuario(_usuario);
-            if(!_usuarioUtils.ValidarPasswordLogin(_usuario.Password, _usuarioEncontrado.Password))
+            if (!_usuarioUtils.ValidarPasswordLogin(_usuario.Password, _usuarioEncontrado.Password))
             {
-                throw new HttpResponseException(401,"Usuario y/o contraseña incorrecto");
+                throw new HttpResponseException(401, "Usuario y/o contraseña incorrecto");
             }
             else
             {
-                var token = _usuarioUtils.GenerarToken(_usuario.Nombre_usuario,_config);
-                _usuarioSesion = await _usuarioDAL.ObtenerUsuarioSesion(_usuario);
-                _usuarioSesion.Token = token;
+                token = _usuarioUtils.GenerarToken(_usuario.Nombre_usuario, _config);                
             }
+            return token;
+        }
+        public async Task<UsuarioSesion> ObtenerUsuarioSesion(UsuarioLogin _usuario)
+        {
+            UsuarioSesion _usuarioSesion = new UsuarioSesion();
+            //Validar que el nombre de usuario se encuentra activo
+            if(string.IsNullOrEmpty(_usuario.Nombre_usuario))
+            {
+                throw new HttpResponseException(401, "Parámetro inválido");
+            }
+            _usuarioSesion = await _usuarioDAL.ObtenerUsuarioSesion(_usuario);
             return _usuarioSesion;
         }
     }

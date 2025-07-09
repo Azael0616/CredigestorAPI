@@ -38,11 +38,32 @@ var swaggerDescripcion = config["Swagger:Descripcion"] ?? "API por defecto";
 var swaggerVersion = config["Version"] ?? "Sin información";
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = swaggerTitulo, Version = swaggerVersion, Description = swaggerDescripcion });
+
+    // Agregar soporte para JWT
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Title = swaggerTitulo,
-        Description = swaggerDescripcion,
-        Version = swaggerVersion        
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Introduce el token aquí: Bearer {token}"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
     });
 });
 //Para el JWT
@@ -55,11 +76,11 @@ builder.Services.AddAuthentication("Bearer")
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
-            )
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
 

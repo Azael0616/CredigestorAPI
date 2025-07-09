@@ -2,6 +2,7 @@
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.DTO;
 using CredigestorAPI.Models.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CredigestorAPI.Controllers
@@ -17,6 +18,7 @@ namespace CredigestorAPI.Controllers
             _usuarioBLL = usuarioBLL;
             _config = config;
         }
+        [Authorize]
         [HttpGet("ObtenerUsuarios")]
         public async Task<IActionResult> ObtenerUsuarios()
         {
@@ -34,6 +36,7 @@ namespace CredigestorAPI.Controllers
                 return StatusCode(ex.Codigo, _resultado);
             }            
         }
+        [Authorize]
         [HttpPost("InsertarUsuario")]
         public async Task<IActionResult> InsertarUsuario([FromBody] Usuario _usuario)
         {
@@ -52,13 +55,38 @@ namespace CredigestorAPI.Controllers
                 return StatusCode(ex.Codigo, _resultado);
             }
         }
+        [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<IActionResult> Login(UsuarioLogin _usuario)
         {
             try
             {
-                UsuarioSesion _usuarioLogin = await _usuarioBLL.ObtenerUsuarioSesion(_usuario,_config);
-                return StatusCode(200, _usuarioLogin);
+                string token = await _usuarioBLL.ObtenerToken(_usuario,_config);
+                return StatusCode(200, new { token=token });
+            }
+            catch (HttpResponseException ex)
+            {
+                ResultadoBD _resultado = new ResultadoBD();
+                _resultado.ErrorDesc = ex.Mensaje;
+                _resultado.Icon = ex.Icono;
+                _resultado.Code = ex.Codigo;
+                return StatusCode(ex.Codigo, _resultado);
+            }
+        }
+        [Authorize]
+        [HttpGet("ObtenerUsuarioSesion")]
+        public async Task<IActionResult> ObtenerUsuarioSesion()
+        {
+            UsuarioSesion _usuarioSesion = new UsuarioSesion();
+            //Se crea try catch
+            try
+            {
+#nullable disable
+                UsuarioLogin _usuario = new UsuarioLogin();
+                _usuario.Nombre_usuario = User.Identity.Name; // Esto viene del ClaimTypes.Name y obtiene el nombre de usuario
+                _usuarioSesion = await _usuarioBLL.ObtenerUsuarioSesion(_usuario);
+#nullable enable
+                return StatusCode(200, _usuarioSesion);
             }
             catch (HttpResponseException ex)
             {
