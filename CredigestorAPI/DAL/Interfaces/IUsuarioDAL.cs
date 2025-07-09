@@ -9,5 +9,7 @@ namespace CredigestorAPI.DAL.Interfaces
         Task<ResultadoBD> InsertarUsuario(Usuario usuario);
         Task<ResultadoBD> ValidarDuplicado(Usuario usuario);
         Task<List<UsuarioDTO>> ObtenerUsuarios();
+        Task<UsuarioLogin> ObtenerUsuarioPorNombreUsuario(UsuarioLogin _usuario);
+        Task<UsuarioSesion> ObtenerUsuarioSesion(UsuarioLogin _usuario);
     }
 }

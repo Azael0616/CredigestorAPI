@@ -3,6 +3,7 @@ using CredigestorAPI.DAL.Interfaces;
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.DTO;
 using CredigestorAPI.Models.Utils;
+using System.Data;
 
 namespace CredigestorAPI.BLL
 {
@@ -37,7 +38,7 @@ namespace CredigestorAPI.BLL
             else
             {
                 //Se crea el hash de la contraseña
-                _usuario.PasswordHash = _usuarioUtils.HashPassword(_usuario,_usuario.PasswordHash); 
+                _usuario.PasswordHash = _usuarioUtils.HashPassword(_usuario.PasswordHash); 
             }
             //Validar el nombre
             if (string.IsNullOrWhiteSpace(_usuario.Nombre) || _usuario.Nombre?.Trim().Length > 64)
@@ -98,6 +99,27 @@ namespace CredigestorAPI.BLL
         {
             List<UsuarioDTO> _lista = await _usuarioDAL.ObtenerUsuarios();
             return _lista;
+        }
+        public async Task<UsuarioLogin> ObtenerUsuarioPorNombreUsuario(UsuarioLogin _usuario)
+        {
+            UsuarioLogin _usuarioLogin = _usuarioLogin = await _usuarioDAL.ObtenerUsuarioPorNombreUsuario(_usuario);  
+            return _usuarioLogin;
+        }
+        public async Task<UsuarioSesion> ObtenerUsuarioSesion(UsuarioLogin _usuario, IConfiguration _config)
+        {
+            UsuarioSesion _usuarioSesion = new UsuarioSesion();
+            UsuarioLogin _usuarioEncontrado = await _usuarioDAL.ObtenerUsuarioPorNombreUsuario(_usuario);
+            if(!_usuarioUtils.ValidarPasswordLogin(_usuario.Password, _usuarioEncontrado.Password))
+            {
+                throw new HttpResponseException(401,"Usuario y/o contraseña incorrecto");
+            }
+            else
+            {
+                var token = _usuarioUtils.GenerarToken(_usuario.Nombre_usuario,_config);
+                _usuarioSesion = await _usuarioDAL.ObtenerUsuarioSesion(_usuario);
+                _usuarioSesion.Token = token;
+            }
+            return _usuarioSesion;
         }
     }
 }

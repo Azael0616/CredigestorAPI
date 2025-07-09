@@ -1,24 +1,29 @@
 ﻿using CredigestorAPI.BLL.Interfaces;
 using CredigestorAPI.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace CredigestorAPI.BLL.Utils
 {
     public class UsuarioUtils : IUsuarioUtils
     {
-        private readonly PasswordHasher<Usuario> _hasher = new();
-
-        public string HashPassword(Usuario _usuario, string password)
+        private readonly PasswordHasher<object> _hasher = new();
+#nullable disable
+        public string HashPassword(string password)
         {
-            return _hasher.HashPassword(_usuario, password);
+            return _hasher.HashPassword(null, password);
         }
 
-        public bool ValidarPasswordLogin(Usuario _usuario,string password, string hashedPassword)
+        public bool ValidarPasswordLogin(string password, string hashedPassword)
         {
-            var result = _hasher.VerifyHashedPassword(_usuario, hashedPassword, password);
+            var result = _hasher.VerifyHashedPassword(null, hashedPassword, password);
             return result == PasswordVerificationResult.Success;
         }
+#nullable enable
         public bool ValidarPasswordSegura(string password)
         {
             if (string.IsNullOrWhiteSpace(password))
@@ -74,6 +79,28 @@ namespace CredigestorAPI.BLL.Utils
             string patron = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
             return Regex.IsMatch(correo, patron, RegexOptions.IgnoreCase);
+        }
+        //Genera un token JWT
+        public string GenerarToken(string usuario,IConfiguration _config)
+        {
+            var claims = new[]
+            {
+            new Claim(ClaimTypes.Name, usuario)
+        };
+#nullable disable
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expiration = DateTime.UtcNow.AddHours(2);
+
+            var token = new JwtSecurityToken(
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
+                expires: expiration,
+                signingCredentials: creds
+            );
+#nullable enable
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

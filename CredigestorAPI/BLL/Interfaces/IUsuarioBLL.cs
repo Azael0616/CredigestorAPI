@@ -8,5 +8,7 @@ namespace CredigestorAPI.BLL.Interfaces
     {
         Task<ResultadoBD> InsertarUsuario(Usuario usuario);
         Task<List<UsuarioDTO>> ObtenerUsuarios();
+        Task<UsuarioLogin> ObtenerUsuarioPorNombreUsuario(UsuarioLogin _usuario);
+        Task<UsuarioSesion> ObtenerUsuarioSesion(UsuarioLogin _usuario, IConfiguration _config);
     }
 }

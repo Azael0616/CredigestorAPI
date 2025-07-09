@@ -67,7 +67,7 @@ namespace CredigestorAPI.DAL
                 _resultado.Error = Convert.ToBoolean(dt["Error"]);
                 _resultado.ErrorDesc = dt["ErrorDesc"] != null ? dt["ErrorDesc"].ToString() : "";
                 _resultado.Icon = dt["Icon"] != null ? dt["Icon"].ToString() : "";
-                _resultado.Code = 200;
+                _resultado.Code = Convert.ToBoolean(dt["Error"]) == true ? 409 : 200;
                 return _resultado;
 #nullable enable
             }
@@ -84,6 +84,56 @@ namespace CredigestorAPI.DAL
                 _lista = UsuarioDTO.ObtenerListaDesdeTabla(dt);
                 return _lista;
             }
+        }
+        //Obtiene el nombre de usuario y contraseña
+        public async Task<UsuarioLogin> ObtenerUsuarioPorNombreUsuario(UsuarioLogin _usuario)
+        {
+            UsuarioLogin _usuarioLogin = new UsuarioLogin();
+#nullable disable
+            var parameters = new Dictionary<string, object>
+            {
+                { "@Nombre_usuario", _usuario.Nombre_usuario},
+            };
+            DataRow dt = await _sqlAuxiliar.EjecutarPrimeraFilaPA("Sp_Usuario_O_PorNombreUsuario", parameters);
+            if(dt == null)
+            {
+                throw new HttpResponseException(500, "Error interno del servidor","error");
+            }
+            else
+            {
+                //En caso no haya encontrado al usuario
+                if(Convert.ToBoolean(dt["Error"]))
+                {
+                    throw new HttpResponseException(404, dt["ErrorDesc"].ToString(), dt["Icon"].ToString());
+                }
+                else
+                {
+                    _usuarioLogin = new UsuarioLogin(dt);   
+                }
+            }
+#nullable enable
+            return _usuarioLogin;
+        }
+        //Obtiene los datos para crear el usuario de sesión
+        public async Task<UsuarioSesion> ObtenerUsuarioSesion(UsuarioLogin _usuario)
+        {
+            UsuarioSesion _usuarioSesion = new UsuarioSesion();
+#nullable disable
+            var parameters = new Dictionary<string, object>
+            {
+                { "@Nombre_usuario", _usuario.Nombre_usuario },
+            };
+            DataRow dt = await _sqlAuxiliar.EjecutarPrimeraFilaPA("Sp_Usuario_O_Sesion", parameters);
+            if (dt == null)
+            {
+                throw new HttpResponseException(500, "Error interno del servidor", "error");
+            }
+            else
+            {
+                _usuarioSesion = new UsuarioSesion(dt);
+            }
+#nullable enable
+            return _usuarioSesion;
         }
     }
 }

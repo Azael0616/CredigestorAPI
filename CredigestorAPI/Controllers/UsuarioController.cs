@@ -11,9 +11,11 @@ namespace CredigestorAPI.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioBLL _usuarioBLL;
-        public UsuarioController(IUsuarioBLL usuarioBLL)
+        private readonly IConfiguration _config;
+        public UsuarioController(IUsuarioBLL usuarioBLL, IConfiguration config)
         {
             _usuarioBLL = usuarioBLL;
+            _config = config;
         }
         [HttpGet("ObtenerUsuarios")]
         public async Task<IActionResult> ObtenerUsuarios()
@@ -44,6 +46,23 @@ namespace CredigestorAPI.Controllers
             }
             catch (HttpResponseException ex)
             {
+                _resultado.ErrorDesc = ex.Mensaje;
+                _resultado.Icon = ex.Icono;
+                _resultado.Code = ex.Codigo;
+                return StatusCode(ex.Codigo, _resultado);
+            }
+        }
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(UsuarioLogin _usuario)
+        {
+            try
+            {
+                UsuarioSesion _usuarioLogin = await _usuarioBLL.ObtenerUsuarioSesion(_usuario,_config);
+                return StatusCode(200, _usuarioLogin);
+            }
+            catch (HttpResponseException ex)
+            {
+                ResultadoBD _resultado = new ResultadoBD();
                 _resultado.ErrorDesc = ex.Mensaje;
                 _resultado.Icon = ex.Icono;
                 _resultado.Code = ex.Codigo;

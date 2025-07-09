@@ -5,7 +5,9 @@ using CredigestorAPI.DAL;
 using CredigestorAPI.DAL.Interfaces;
 using CredigestorAPI.DAL.Utils;
 using CredigestorAPI.Models.Utils;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,8 +26,7 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials(); // Solo si luego usas cookies o autenticación basada en sesión
+              .AllowAnyMethod();              
     });
 });
 // Obtener la cadena de conexión desde la configuración
@@ -44,6 +45,23 @@ builder.Services.AddSwaggerGen(c =>
         Version = swaggerVersion        
     });
 });
+//Para el JWT
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
+            )
+        };
+    });
 
 // Registrar el conector de SQL
 builder.Services.AddSingleton<ISqlAuxiliar>(new SqlAuxiliar(cadena_de_conexion));
@@ -74,6 +92,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<ExcepcionMiddleware>(); //Manejo de errores
