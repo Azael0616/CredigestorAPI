@@ -10,6 +10,6 @@ namespace CredigestorAPI.BLL.Interfaces
         int CalcularEdad(DateTime fechaNacimiento);
         bool ValidarFechaIngreso(DateTime fechaIngreso);
         bool ValidarCorreo(string correo);
-        string GenerarToken(string usuario, IConfiguration _config);
+        string GenerarToken(string usuario, IConfiguration _config, int usuarioID);
     }
 }

@@ -81,12 +81,13 @@ namespace CredigestorAPI.BLL.Utils
             return Regex.IsMatch(correo, patron, RegexOptions.IgnoreCase);
         }
         //Genera un token JWT
-        public string GenerarToken(string usuario,IConfiguration _config)
+        public string GenerarToken(string usuario,IConfiguration _config,int usuarioID)
         {
             var claims = new[]
             {
-            new Claim(ClaimTypes.Name, usuario)
-        };
+                new Claim(ClaimTypes.Name, usuario),
+                new Claim("UsuarioID", usuarioID.ToString())
+            };
 #nullable disable
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

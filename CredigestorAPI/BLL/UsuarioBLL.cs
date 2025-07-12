@@ -100,34 +100,34 @@ namespace CredigestorAPI.BLL
             List<UsuarioDTO> _lista = await _usuarioDAL.ObtenerUsuarios();
             return _lista;
         }
-        public async Task<UsuarioLogin> ObtenerUsuarioPorNombreUsuario(UsuarioLogin _usuario)
+        public async Task<UsuarioEncontrado> ObtenerUsuarioPorNombreUsuario(UsuarioLogin _usuario)
         {
-            UsuarioLogin _usuarioLogin = _usuarioLogin = await _usuarioDAL.ObtenerUsuarioPorNombreUsuario(_usuario);  
-            return _usuarioLogin;
+            UsuarioEncontrado _usuarioEncontrado = await _usuarioDAL.ObtenerUsuarioPorNombreUsuario(_usuario);  
+            return _usuarioEncontrado;
         }
         public async Task<string> ObtenerToken(UsuarioLogin _usuario, IConfiguration _config)
         {
             string token = "";
-            UsuarioLogin _usuarioEncontrado = await _usuarioDAL.ObtenerUsuarioPorNombreUsuario(_usuario);
+            UsuarioEncontrado _usuarioEncontrado = await _usuarioDAL.ObtenerUsuarioPorNombreUsuario(_usuario);
             if (!_usuarioUtils.ValidarPasswordLogin(_usuario.Password, _usuarioEncontrado.Password))
             {
                 throw new HttpResponseException(401, "Usuario y/o contraseña incorrecto");
             }
             else
             {
-                token = _usuarioUtils.GenerarToken(_usuario.Nombre_usuario, _config);                
+                token = _usuarioUtils.GenerarToken(_usuario.Nombre_usuario, _config,_usuarioEncontrado.UsuarioID);                
             }
             return token;
         }
-        public async Task<UsuarioSesion> ObtenerUsuarioSesion(UsuarioLogin _usuario)
+        public async Task<UsuarioSesion> ObtenerUsuarioSesion(int usuarioID)
         {
             UsuarioSesion _usuarioSesion = new UsuarioSesion();
             //Validar que el nombre de usuario se encuentra activo
-            if(string.IsNullOrEmpty(_usuario.Nombre_usuario))
+            if(usuarioID <= 0)
             {
                 throw new HttpResponseException(401, "Parámetro inválido");
             }
-            _usuarioSesion = await _usuarioDAL.ObtenerUsuarioSesion(_usuario);
+            _usuarioSesion = await _usuarioDAL.ObtenerUsuarioSesion(usuarioID);
             return _usuarioSesion;
         }
     }

@@ -86,9 +86,9 @@ namespace CredigestorAPI.DAL
             }
         }
         //Obtiene el nombre de usuario y contraseña
-        public async Task<UsuarioLogin> ObtenerUsuarioPorNombreUsuario(UsuarioLogin _usuario)
+        public async Task<UsuarioEncontrado> ObtenerUsuarioPorNombreUsuario(UsuarioLogin _usuario)
         {
-            UsuarioLogin _usuarioLogin = new UsuarioLogin();
+            UsuarioEncontrado _usuarioLogin = new UsuarioEncontrado();
 #nullable disable
             var parameters = new Dictionary<string, object>
             {
@@ -108,20 +108,20 @@ namespace CredigestorAPI.DAL
                 }
                 else
                 {
-                    _usuarioLogin = new UsuarioLogin(dt);   
+                    _usuarioLogin = new UsuarioEncontrado(dt);   
                 }
             }
 #nullable enable
             return _usuarioLogin;
         }
         //Obtiene los datos para crear el usuario de sesión
-        public async Task<UsuarioSesion> ObtenerUsuarioSesion(UsuarioLogin _usuario)
+        public async Task<UsuarioSesion> ObtenerUsuarioSesion(int usuarioID)
         {
             UsuarioSesion _usuarioSesion = new UsuarioSesion();
 #nullable disable
             var parameters = new Dictionary<string, object>
             {
-                { "@Nombre_usuario", _usuario.Nombre_usuario },
+                { "@UsuarioID", usuarioID },
             };
             DataRow dt = await _sqlAuxiliar.EjecutarPrimeraFilaPA("Sp_Usuario_O_Sesion", parameters);
             if (dt == null)

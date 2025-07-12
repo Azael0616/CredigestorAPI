@@ -4,6 +4,7 @@ using CredigestorAPI.Models.DTO;
 using CredigestorAPI.Models.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace CredigestorAPI.Controllers
 {
@@ -19,6 +20,9 @@ namespace CredigestorAPI.Controllers
             _config = config;
         }
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [SwaggerOperation(Summary = "Obtiene todos los usuarios")]
         [HttpGet("ObtenerUsuarios")]
         public async Task<IActionResult> ObtenerUsuarios()
         {
@@ -37,6 +41,11 @@ namespace CredigestorAPI.Controllers
             }            
         }
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [SwaggerOperation(Summary = "Inserta un usuario, recibiendo como parámetro el modelo")]
         [HttpPost("InsertarUsuario")]
         public async Task<IActionResult> InsertarUsuario([FromBody] Usuario _usuario)
         {
@@ -56,8 +65,11 @@ namespace CredigestorAPI.Controllers
             }
         }
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [SwaggerOperation(Summary = "Retorna un token JWT, recibiendo como parámetro el modelo UsuarioLogin")]
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(UsuarioLogin _usuario)
+        public async Task<IActionResult> Login([FromBody] UsuarioLogin _usuario)
         {
             try
             {
@@ -74,6 +86,10 @@ namespace CredigestorAPI.Controllers
             }
         }
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]        
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [SwaggerOperation(Summary = "Obtiene los datos del usuario que ha iniciado sesión")]
         [HttpGet("ObtenerUsuarioSesion")]
         public async Task<IActionResult> ObtenerUsuarioSesion()
         {
@@ -82,9 +98,10 @@ namespace CredigestorAPI.Controllers
             try
             {
 #nullable disable
-                UsuarioLogin _usuario = new UsuarioLogin();
-                _usuario.Nombre_usuario = User.Identity.Name; // Esto viene del ClaimTypes.Name y obtiene el nombre de usuario
-                _usuarioSesion = await _usuarioBLL.ObtenerUsuarioSesion(_usuario);
+
+                // Delegado. nombre = User.Identity.Name; Esto viene del ClaimTypes.Name y obtiene el nombre de usuario
+                int usuarioID = int.Parse(User.FindFirst("UsuarioID")?.Value); // Esto viene del Claims y obtiene el usuarioID
+                _usuarioSesion = await _usuarioBLL.ObtenerUsuarioSesion(usuarioID);
 #nullable enable
                 return StatusCode(200, _usuarioSesion);
             }
