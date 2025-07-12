@@ -51,6 +51,8 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Introduce el token aquí: Bearer {token}"
     });
 
+    c.EnableAnnotations();
+
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -91,10 +93,12 @@ builder.Services.AddSingleton<ISqlAuxiliar>(new SqlAuxiliar(cadena_de_conexion))
 
 //Registrar DAL
 builder.Services.AddScoped<IUsuarioDAL, UsuarioDAL>();
+builder.Services.AddScoped<INivel_usuarioDAL, Nivel_usuarioDAL>();
 
 //Registrar BLL
 builder.Services.AddScoped<IUsuarioUtils, UsuarioUtils>();
 builder.Services.AddScoped<IUsuarioBLL, UsuarioBLL>();
+builder.Services.AddScoped<INivel_usuarioBLL, Nivel_usuarioBLL>();
 #nullable restore
 var app = builder.Build();
 

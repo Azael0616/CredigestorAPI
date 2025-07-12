@@ -6,10 +6,12 @@ namespace CredigestorAPI.BLL.Interfaces
 {
     public interface IUsuarioBLL
     {
-        Task<ResultadoBD> InsertarUsuario(Usuario usuario);
+        Task<ResultadoBD> InsertarUsuario(Usuario usuario, int usuarioInsercion);
+        Task<ResultadoBD> ModificarUsuario(Usuario usuario, int usuarioModificacion);
         Task<List<UsuarioDTO>> ObtenerUsuarios();
-        Task<UsuarioLogin> ObtenerUsuarioPorNombreUsuario(UsuarioLogin _usuario);
+        Task<Usuario> ObtenerUsuarioPorID(int usuarioID);
+        Task<UsuarioEncontrado> ObtenerUsuarioPorNombreUsuario(UsuarioLogin _usuario);
         Task<string> ObtenerToken(UsuarioLogin _usuario, IConfiguration _config);
-        Task<UsuarioSesion> ObtenerUsuarioSesion(UsuarioLogin _usuario);
+        Task<UsuarioSesion> ObtenerUsuarioSesion(int usuarioID);
     }
 }
