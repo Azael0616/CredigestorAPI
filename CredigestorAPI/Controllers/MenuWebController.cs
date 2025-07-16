@@ -1,4 +1,5 @@
-﻿using CredigestorAPI.BLL.Interfaces;
+﻿using CredigestorAPI.BLL;
+using CredigestorAPI.BLL.Interfaces;
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -9,28 +10,29 @@ namespace CredigestorAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NivelUsuarioController : ControllerBase
+    public class MenuWebController : ControllerBase
     {
-        private readonly INivel_usuarioBLL _nivelUsuarioBLL;        
-        public NivelUsuarioController(INivel_usuarioBLL nivelUsuarioBLL)
+        private readonly IMenu_webBLL _menuWebBLL;
+        public MenuWebController(IMenu_webBLL menuWebBLL)
         {
-            _nivelUsuarioBLL = nivelUsuarioBLL;            
+            _menuWebBLL = menuWebBLL;
         }
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [SwaggerOperation(Summary = "Obtiene los tipos de nivel de usuario activos según el UsuarioID del JWT")]
-        [HttpGet("ObtenerCatalogoActivo")]
-        public async Task<IActionResult> ObtenerCatalogoActivo()
+        [SwaggerOperation(Summary = "Obtiene los menu web disponible para un usuario según su nivel de usuario")]
+        [HttpGet("ObtenerMenuWebPorUsuario")]
+        public async Task<IActionResult> ObtenerMenuWebPorUsuario()
         {
             try
             {
 #nullable disable
                 int usuarioID = int.Parse(User.FindFirst("UsuarioID")?.Value); // Esto viene del Claims y obtiene el usuarioID
 #nullable enable
-                List<Nivel_usuario> _lista = await _nivelUsuarioBLL.ObtenerCatalogoActivo(usuarioID);
-                return StatusCode(200, _lista);
+                List<Menu_web> _lista = await _menuWebBLL.ObtenerMenuWebPorUsuario(usuarioID);
+                List<Menu_web> _listaArbol = Utils.Utils.ConstruirJerarquia(_lista);
+                return StatusCode(200, _listaArbol);
             }
             catch (HttpResponseException ex)
             {
