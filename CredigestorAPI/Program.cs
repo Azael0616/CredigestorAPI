@@ -94,11 +94,13 @@ builder.Services.AddSingleton<ISqlAuxiliar>(new SqlAuxiliar(cadena_de_conexion))
 //Registrar DAL
 builder.Services.AddScoped<IUsuarioDAL, UsuarioDAL>();
 builder.Services.AddScoped<INivel_usuarioDAL, Nivel_usuarioDAL>();
+builder.Services.AddScoped<IMenu_webDAL, Menu_webDAL>();
 
 //Registrar BLL
 builder.Services.AddScoped<IUsuarioUtils, UsuarioUtils>();
 builder.Services.AddScoped<IUsuarioBLL, UsuarioBLL>();
 builder.Services.AddScoped<INivel_usuarioBLL, Nivel_usuarioBLL>();
+builder.Services.AddScoped<IMenu_webBLL, Menu_webBLL>();
 #nullable restore
 var app = builder.Build();
 
