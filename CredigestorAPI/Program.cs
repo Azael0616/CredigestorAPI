@@ -95,12 +95,15 @@ builder.Services.AddSingleton<ISqlAuxiliar>(new SqlAuxiliar(cadena_de_conexion))
 builder.Services.AddScoped<IUsuarioDAL, UsuarioDAL>();
 builder.Services.AddScoped<INivel_usuarioDAL, Nivel_usuarioDAL>();
 builder.Services.AddScoped<IMenu_webDAL, Menu_webDAL>();
+builder.Services.AddScoped<IClienteDAL, ClienteDAL>();
 
 //Registrar BLL
 builder.Services.AddScoped<IUsuarioUtils, UsuarioUtils>();
+builder.Services.AddScoped<IGeneralUtils, GeneralUtils>();
 builder.Services.AddScoped<IUsuarioBLL, UsuarioBLL>();
 builder.Services.AddScoped<INivel_usuarioBLL, Nivel_usuarioBLL>();
 builder.Services.AddScoped<IMenu_webBLL, Menu_webBLL>();
+builder.Services.AddScoped<IClienteBLL, ClienteBLL>();
 #nullable restore
 var app = builder.Build();
 

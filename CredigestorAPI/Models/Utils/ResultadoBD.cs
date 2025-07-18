@@ -6,13 +6,15 @@
         public string ErrorDesc { get; set; } = "Ocurrió un error";
         public string Icon { get; set; } = "error";
         public int Code { get; set; } = 500;
+        public int ValorAuxiliar { get; set; } = 0;
         public ResultadoBD() { }
-        public ResultadoBD(bool error, string errorDesc, string icon, int code)
+        public ResultadoBD(bool error, string errorDesc, string icon, int code, int valorauxiliar)
         {
             this.Error = error;
             this.ErrorDesc = errorDesc;
             this.Icon = icon;
             this.Code = code;
+            this.ValorAuxiliar = valorauxiliar;
         }
     }
 }
