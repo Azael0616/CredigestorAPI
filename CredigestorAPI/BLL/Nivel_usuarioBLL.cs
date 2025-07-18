@@ -15,6 +15,7 @@ namespace CredigestorAPI.BLL
         {
             _nivelUsuarioDAL = nivelUsuarioDAL;            
         }
+        //Obtiene el catalogo activo de nivel de usuario
         public async Task<List<Nivel_usuario>> ObtenerCatalogoActivo(int usuarioID)
         {
             if(usuarioID <= 0)
