@@ -42,8 +42,8 @@ namespace CredigestorAPI.Models
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Menu_web _nivelUsuario = new Menu_web(dr);
-                    _lista.Add(_nivelUsuario);
+                    Menu_web _menuWeb = new Menu_web(dr);
+                    _lista.Add(_menuWeb);
                 }
             }
             return _lista;

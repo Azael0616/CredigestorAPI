@@ -20,7 +20,7 @@ namespace CredigestorAPI.DAL
             {
                 { "@UsuarioID", usuarioID },
             };
-            DataTable dt = await _sqlAuxiliar.EjecutarTablaPA("Sp_NivelUsuario_O_CatalogoActivos", parameters);
+            DataTable dt = await _sqlAuxiliar.EjecutarTablaPA("Sp_NivelUsuario_O_CatalogoActivo", parameters);
             if (dt == null)
                 return _lista;
             else

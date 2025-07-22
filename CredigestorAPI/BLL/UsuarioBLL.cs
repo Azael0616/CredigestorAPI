@@ -11,10 +11,12 @@ namespace CredigestorAPI.BLL
     {
         private readonly IUsuarioDAL _usuarioDAL;
         private readonly IUsuarioUtils _usuarioUtils;
-        public UsuarioBLL(IUsuarioDAL usuarioDAL, IUsuarioUtils usuarioUtils)
+        private readonly IGeneralUtils _generalUtils;
+        public UsuarioBLL(IUsuarioDAL usuarioDAL, IUsuarioUtils usuarioUtils, IGeneralUtils generalUtils)
         {
             _usuarioDAL = usuarioDAL;
             _usuarioUtils = usuarioUtils;
+            _generalUtils = generalUtils;
         }
         public async Task<ResultadoBD> InsertarUsuario(Usuario _usuario, int usuarioInsercion)
         {
@@ -61,7 +63,7 @@ namespace CredigestorAPI.BLL
                 throw new HttpResponseException(400, "El apellido materno no tiene la sintaxis correcta");
             }
             //Validar la fecha de nacimiento
-            if(_usuarioUtils.CalcularEdad(_usuario.Fecha_nacimiento) < 18)
+            if(_generalUtils.CalcularEdad(_usuario.Fecha_nacimiento) < 18)
             {
                 throw new HttpResponseException(400, "La fecha de nacimiento no tiene la sintaxis correcta");
             }
@@ -81,7 +83,7 @@ namespace CredigestorAPI.BLL
                 throw new HttpResponseException(400, "El prefijo del teléfono no tiene la sintaxis correcta");
             }
             //Validar el correo
-            if (!_usuarioUtils.ValidarCorreo(_usuario.Correo_electronico) || _usuario.Correo_electronico?.Trim().Length > 64)
+            if (!_generalUtils.ValidarCorreo(_usuario.Correo_electronico) || _usuario.Correo_electronico?.Trim().Length > 64)
             {
                 throw new HttpResponseException(400, "El correo electrónico no tiene la sintaxis correcta");
             }
@@ -98,6 +100,11 @@ namespace CredigestorAPI.BLL
         public async Task<ResultadoBD> ModificarUsuario(Usuario _usuario, int usuarioModificacion)
         {
             #region Validaciones
+            //Validar el usuario ID
+            if (_usuario.UsuarioID <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
             //Validar si el nombre de usuario es nulo o menor a 10 caracteres
             if (string.IsNullOrWhiteSpace(_usuario.Nombre_usuario) || _usuario.Nombre_usuario?.Trim().Length != 10)
             {
@@ -130,7 +137,7 @@ namespace CredigestorAPI.BLL
                 throw new HttpResponseException(400, "El apellido materno no tiene la sintaxis correcta");
             }
             //Validar la fecha de nacimiento
-            if (_usuarioUtils.CalcularEdad(_usuario.Fecha_nacimiento) < 18)
+            if (_generalUtils.CalcularEdad(_usuario.Fecha_nacimiento) < 18)
             {
                 throw new HttpResponseException(400, "La fecha de nacimiento no tiene la sintaxis correcta");
             }
@@ -150,7 +157,7 @@ namespace CredigestorAPI.BLL
                 throw new HttpResponseException(400, "El prefijo del teléfono no tiene la sintaxis correcta");
             }
             //Validar el correo
-            if (!_usuarioUtils.ValidarCorreo(_usuario.Correo_electronico) || _usuario.Correo_electronico?.Trim().Length > 64)
+            if (!_generalUtils.ValidarCorreo(_usuario.Correo_electronico) || _usuario.Correo_electronico?.Trim().Length > 64)
             {
                 throw new HttpResponseException(400, "El correo electrónico no tiene la sintaxis correcta");
             }

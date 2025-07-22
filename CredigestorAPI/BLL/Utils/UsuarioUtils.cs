@@ -50,15 +50,7 @@ namespace CredigestorAPI.BLL.Utils
             }
 
             return tieneMayuscula && tieneMinuscula && tieneNumero && tieneEspecial;
-        }
-        //Retorna la edad
-        public int CalcularEdad(DateTime fechaNacimiento)
-        {
-            var hoy = DateTime.Today;
-            int edad = hoy.Year - fechaNacimiento.Year;
-            if (fechaNacimiento > hoy.AddYears(-edad)) edad--;
-            return edad;
-        }
+        }        
         //Valida si la fecha de ingreso no es mayor a 50 años atrás y no es mayor a 1 mes hacia adelante
         public bool ValidarFechaIngreso(DateTime fechaIngreso)
         {
@@ -68,18 +60,7 @@ namespace CredigestorAPI.BLL.Utils
             DateTime limiteMaximo = hoy.AddMonths(1);
 
             return fechaIngreso >= limiteMinimo && fechaIngreso <= limiteMaximo;
-        }
-        //Valida el correo
-        public bool ValidarCorreo(string correo)
-        {
-            if (string.IsNullOrWhiteSpace(correo))
-                return false;
-
-            // Expresión regular para formato básico de email
-            string patron = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-
-            return Regex.IsMatch(correo, patron, RegexOptions.IgnoreCase);
-        }
+        }        
         //Genera un token JWT
         public string GenerarToken(string usuario,IConfiguration _config,int usuarioID)
         {
