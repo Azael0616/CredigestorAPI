@@ -45,7 +45,7 @@ namespace CredigestorAPI.BLL
             {
                 throw new HttpResponseException(409, "La CURP ingresada ya existe");
             }
-            if (_cliente.RFC.Length != 13)
+            if (_cliente.RFC.Length <12 || _cliente.RFC.Length>13)
             {
                 throw new HttpResponseException(400, "El RFC no tiene la sintaxis correcta");
             }

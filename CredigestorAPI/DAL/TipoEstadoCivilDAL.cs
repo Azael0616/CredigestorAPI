@@ -15,7 +15,7 @@ namespace CredigestorAPI.DAL
         public async Task<List<Tipo_estado_civil>> ObtenerCatalogoActivo()
         {
             List<Tipo_estado_civil> _lista = new List<Tipo_estado_civil>();
-            DataTable dt = await _sqlAuxiliar.EjecutarTablaPA("Sp_TipoEstadoCivil_O_Catalogo", null);
+            DataTable dt = await _sqlAuxiliar.EjecutarTablaPA("Sp_TipoEstadoCivil_O_CatalogoActivo", null);
             if (dt == null)
                 return _lista;
             else
