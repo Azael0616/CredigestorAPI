@@ -1,4 +1,5 @@
 ﻿using CredigestorAPI.DAL.Interfaces;
+using CredigestorAPI.DAL.Mappers;
 using CredigestorAPI.Models;
 using System.Data;
 
@@ -20,7 +21,7 @@ namespace CredigestorAPI.DAL
                 return _lista;
             else
             {
-                _lista = Tipo_estado_civil.ObtenerListaDesdeTabla(dt);
+                _lista = Tipo_estado_civilMapper.ObtenerListaDataTable(dt);
                 return _lista;
             }
         }

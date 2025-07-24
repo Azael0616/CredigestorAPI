@@ -1,4 +1,5 @@
 ﻿using CredigestorAPI.DAL.Interfaces;
+using CredigestorAPI.DAL.Mappers;
 using CredigestorAPI.Models;
 using System.Data;
 
@@ -20,7 +21,7 @@ namespace CredigestorAPI.DAL
                 return _lista;
             else
             {
-                _lista = Tipo_sexo.ObtenerListaDesdeTabla(dt);
+                _lista = Tipo_sexoMapper.ObtenerListaDataTable(dt);
                 return _lista;
             }
         }
