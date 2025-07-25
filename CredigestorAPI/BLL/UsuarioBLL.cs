@@ -91,6 +91,11 @@ namespace CredigestorAPI.BLL
             {
                 throw new HttpResponseException(400, "El nivel de usuario no tiene la sintaxis correcta");
             }
+            //Valida el UsuarioID_insercion
+            if (usuarioInsercion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
             #endregion
 
             ResultadoBD _resultado = await _usuarioDAL.InsertarUsuario(_usuario,usuarioInsercion);
@@ -164,6 +169,11 @@ namespace CredigestorAPI.BLL
             if (_usuario.NivelUsuarioID <= 0)
             {
                 throw new HttpResponseException(400, "El nivel de usuario no tiene la sintaxis correcta");
+            }
+            //Valida el UsuarioID_insercion
+            if (usuarioModificacion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
             }
             #endregion
 
