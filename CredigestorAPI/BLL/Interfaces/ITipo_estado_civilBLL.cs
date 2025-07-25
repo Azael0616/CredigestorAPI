@@ -1,8 +1,8 @@
 ﻿using CredigestorAPI.Models;
 
-namespace CredigestorAPI.DAL.Interfaces
+namespace CredigestorAPI.BLL.Interfaces
 {
-    public interface ITipoEstadoCivilDAL
+    public interface ITipo_estado_civilBLL
     {
         Task<List<Tipo_estado_civil>> ObtenerCatalogoActivo();
     }

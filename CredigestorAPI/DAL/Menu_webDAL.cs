@@ -1,4 +1,5 @@
 ﻿using CredigestorAPI.DAL.Interfaces;
+using CredigestorAPI.DAL.Mappers;
 using CredigestorAPI.Models;
 using System.Data;
 
@@ -25,7 +26,7 @@ namespace CredigestorAPI.DAL
                 return _lista;
             else
             {
-                _lista = Menu_web.ObtenerListaDesdeTabla(dt);
+                _lista = Menu_webMapper.ObtenerListaDataTable(dt);
                 return _lista;
             }
         }

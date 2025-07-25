@@ -2,7 +2,7 @@
 
 namespace CredigestorAPI.BLL.Interfaces
 {
-    public interface ITipoSexoBLL
+    public interface ITipo_sexoBLL
     {
         Task<List<Tipo_sexo>> ObtenerCatalogoActivo();
     }

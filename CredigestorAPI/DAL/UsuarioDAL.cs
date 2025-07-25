@@ -1,4 +1,6 @@
 ﻿using CredigestorAPI.DAL.Interfaces;
+using CredigestorAPI.DAL.Mappers;
+using CredigestorAPI.DAL.Mappers.DTO;
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.DTO;
 using CredigestorAPI.Models.Utils;
@@ -120,7 +122,7 @@ namespace CredigestorAPI.DAL
                 return _lista;
             else
             {
-                _lista = UsuarioDTO.ObtenerListaDesdeTabla(dt);
+                _lista = UsuarioDTOMapper.ObtenerListaDataTable(dt);
                 return _lista;
             }
         }
@@ -139,7 +141,7 @@ namespace CredigestorAPI.DAL
                 return _usuario;
             else
             {
-                _usuario = new Usuario(dt);
+                _usuario = UsuarioMapper.ObtenerObjetoDataRow(dt);
                 return _usuario;
             }
         }

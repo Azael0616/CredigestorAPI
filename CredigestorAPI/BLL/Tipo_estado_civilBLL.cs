@@ -4,18 +4,17 @@ using CredigestorAPI.Models;
 
 namespace CredigestorAPI.BLL
 {
-    public class TipoEstadoCivilBLL : ITipoEstadoCivilBLL
+    public class Tipo_estado_civilBLL : ITipo_estado_civilBLL
     {
-        private readonly ITipoEstadoCivilDAL _tipoEstadoCivilDAL;
-        public TipoEstadoCivilBLL(ITipoEstadoCivilDAL tipoEstadoCivilDAL)
+        private readonly ITipo_estado_civilDAL _tipoEstadoCivilDAL;
+        public Tipo_estado_civilBLL(ITipo_estado_civilDAL tipoEstadoCivilDAL)
         {
             _tipoEstadoCivilDAL = tipoEstadoCivilDAL;
         }
         //Obtiene el catalogo de tipo de sexo
         public async Task<List<Tipo_estado_civil>> ObtenerCatalogoActivo()
         {
-            List<Tipo_estado_civil> _lista = await _tipoEstadoCivilDAL.ObtenerCatalogoActivo();
-            return _lista;
+            return await _tipoEstadoCivilDAL.ObtenerCatalogoActivo();            
         }
     }
 }

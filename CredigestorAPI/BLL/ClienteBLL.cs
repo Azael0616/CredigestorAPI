@@ -19,18 +19,8 @@ namespace CredigestorAPI.BLL
         }
         public async Task<List<ClienteDTO>> ObtenerClientes()
         {
-            List<ClienteDTO> _lista = await _clienteDAL.ObtenerClientes();
-            return _lista;
-        }
-        public async Task<Cliente> ObtenerClientePorID(int clienteID)
-        {
-            Cliente _clienteEncontrado = await _clienteDAL.ObtenerClientePorID(clienteID);
-            if (_clienteEncontrado.ClienteID == 0)
-            {
-                throw new HttpResponseException(404, "Cliente no encontrado");
-            }
-            return _clienteEncontrado;
-        }
+            return await _clienteDAL.ObtenerClientes();            
+        }        
         public async Task<ResultadoBD> InsertarCliente(Cliente _cliente, int usuarioInsercion)
         {
             #region Validaciones
@@ -92,7 +82,12 @@ namespace CredigestorAPI.BLL
             if (!_generalUtils.ValidarCorreo(_cliente.Correo_electronico) || _cliente.Correo_electronico?.Trim().Length > 64)
             {
                 throw new HttpResponseException(400, "El correo electrónico no tiene la sintaxis correcta");
-            }            
+            }
+            //Valida el UsuarioID_insercion
+            if (usuarioInsercion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
             #endregion
 
             ResultadoBD _resultado = await _clienteDAL.InsertarCliente(_cliente, usuarioInsercion);
@@ -165,10 +160,539 @@ namespace CredigestorAPI.BLL
             {
                 throw new HttpResponseException(400, "El correo electrónico no tiene la sintaxis correcta");
             }
+            //Valida el UsuarioID_insercion
+            if (usuarioModificacion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
             #endregion
 
             ResultadoBD _resultado = await _clienteDAL.ModificarCliente(_cliente, usuarioModificacion);
             return _resultado;
+        }
+        public async Task<ResultadoBD> InsertarClienteDireccion(Cliente_direccion _cliente, int usuarioInsercion)
+        {
+            #region Validaciones
+            //Valida el ClienteID
+            if(_cliente.ClienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            //Valida la calle
+            if (_cliente.Calle.Length <= 0 || _cliente.Calle.Length > 128)
+            {
+                throw new HttpResponseException(400, "La Calle no tiene la sintaxis correcta");
+            }
+            //Valida el numero exterior
+            if (_cliente.Numero_exterior.Length <= 0 || _cliente.Numero_exterior.Length > 10)
+            {
+                throw new HttpResponseException(400, "El Número exterior no tiene la sintaxis correcta");
+            }
+            //Valida el numero interior
+            if (_cliente.Numero_interior.Length > 10)
+            {
+                throw new HttpResponseException(400, "El Número interior no tiene la sintaxis correcta");
+            }
+            //Valida la entre calle 1
+            if (_cliente.Entre_calle1.Length > 128)
+            {
+                throw new HttpResponseException(400, "La Entre calle 1 no tiene la sintaxis correcta");
+            }
+            //Valida la entre calle 2
+            if (_cliente.Entre_calle2.Length > 128)
+            {
+                throw new HttpResponseException(400, "La Entre calle 2 no tiene la sintaxis correcta");
+            }
+            //Valida la colonia
+            if (_cliente.Colonia.Length <= 0 || _cliente.Colonia.Length > 128)
+            {
+                throw new HttpResponseException(400, "La Colonia no tiene la sintaxis correcta");
+            }
+            //Valida el PaisID
+            if (_cliente.PaisID <= 0)
+            {
+                throw new HttpResponseException(400, "El PaisID no tiene la sintaxis correcta");
+            }
+            //Valida el EstadoID
+            if (_cliente.EstadoID <= 0)
+            {
+                throw new HttpResponseException(400, "El EstadoID no tiene la sintaxis correcta");
+            }
+            //Valida el MunicipioID
+            if (_cliente.MunicipioID <= 0)
+            {
+                throw new HttpResponseException(400, "El MunicipioID no tiene la sintaxis correcta");
+            }
+            //Valida la Referencia casa
+            if (_cliente.Referencia_casa.Length > 255)
+            {
+                throw new HttpResponseException(400, "La Referencia casa no tiene la sintaxis correcta");
+            }
+            //Valida el UsuarioID_insercion
+            if (usuarioInsercion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
+            #endregion
+
+            ResultadoBD _resultado = await _clienteDAL.InsertarClienteDireccion(_cliente, usuarioInsercion);
+            return _resultado;
+        }
+        public async Task<ResultadoBD> ModificarClienteDireccion(Cliente_direccion _cliente, int usuarioModificacion)
+        {
+            #region Validaciones
+            //Valida el ClienteID
+            if (_cliente.ClienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            //Valida la calle
+            if (_cliente.Calle.Length <= 0 || _cliente.Calle.Length > 128)
+            {
+                throw new HttpResponseException(400, "La Calle no tiene la sintaxis correcta");
+            }
+            //Valida el numero exterior
+            if (_cliente.Numero_exterior.Length <= 0 || _cliente.Numero_exterior.Length > 10)
+            {
+                throw new HttpResponseException(400, "El Número exterior no tiene la sintaxis correcta");
+            }
+            //Valida el numero interior
+            if (_cliente.Numero_interior.Length > 10)
+            {
+                throw new HttpResponseException(400, "El Número interior no tiene la sintaxis correcta");
+            }
+            //Valida la entre calle 1
+            if (_cliente.Entre_calle1.Length > 128)
+            {
+                throw new HttpResponseException(400, "La Entre calle 1 no tiene la sintaxis correcta");
+            }
+            //Valida la entre calle 2
+            if (_cliente.Entre_calle2.Length > 128)
+            {
+                throw new HttpResponseException(400, "La Entre calle 2 no tiene la sintaxis correcta");
+            }
+            //Valida la colonia
+            if (_cliente.Colonia.Length <= 0 || _cliente.Colonia.Length > 128)
+            {
+                throw new HttpResponseException(400, "La Colonia no tiene la sintaxis correcta");
+            }
+            //Valida el PaisID
+            if (_cliente.PaisID <= 0)
+            {
+                throw new HttpResponseException(400, "El PaisID no tiene la sintaxis correcta");
+            }
+            //Valida el EstadoID
+            if (_cliente.EstadoID <= 0)
+            {
+                throw new HttpResponseException(400, "El EstadoID no tiene la sintaxis correcta");
+            }
+            //Valida el MunicipioID
+            if (_cliente.MunicipioID <= 0)
+            {
+                throw new HttpResponseException(400, "El MunicipioID no tiene la sintaxis correcta");
+            }
+            //Valida la Referencia casa
+            if (_cliente.Referencia_casa.Length > 255)
+            {
+                throw new HttpResponseException(400, "La Referencia Casa no tiene la sintaxis correcta");
+            }
+            //Valida el UsuarioID_insercion
+            if (usuarioModificacion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
+            #endregion
+
+            ResultadoBD _resultado = await _clienteDAL.ModificarClienteDireccion(_cliente, usuarioModificacion);
+            return _resultado;
+        }
+        public async Task<ResultadoBD> InsertarClienteDocumento(Cliente_documento _cliente, int usuarioInsercion)
+        {
+            #region Validaciones
+            //Valida el ClienteID
+            if (_cliente.ClienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            if (_cliente.TipoDocumentoID <= 0)
+            {
+                throw new HttpResponseException(400, "El TipoDocumentoID no tiene la sintaxis correcta");
+            }
+            if (_cliente.Contenido.Length == 0)
+            {
+                throw new HttpResponseException(400, "El Contenido no tiene la sintaxis correcta");
+            }
+            //Valida el UsuarioID_insercion
+            if (usuarioInsercion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
+            #endregion
+
+            ResultadoBD _resultado = await _clienteDAL.InsertarClienteDocumento(_cliente, usuarioInsercion);
+            return _resultado;
+        }
+        public async Task<ResultadoBD> ModificarClienteDocumento(Cliente_documento _cliente, int usuarioModificacion)
+        {
+            #region Validaciones
+            if (_cliente.DocumentoID <= 0)
+            {
+                throw new HttpResponseException(400, "El DocumentoID no tiene la sintaxis correcta");
+            }
+            //Valida el ClienteID
+            if (_cliente.ClienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            if (_cliente.TipoDocumentoID <= 0)
+            {
+                throw new HttpResponseException(400, "El TipoDocumentoID no tiene la sintaxis correcta");
+            }
+            if (_cliente.Contenido.Length == 0)
+            {
+                throw new HttpResponseException(400, "El Contenido no tiene la sintaxis correcta");
+            }
+            //Valida el UsuarioID_insercion
+            if (usuarioModificacion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
+            #endregion
+
+            ResultadoBD _resultado = await _clienteDAL.InsertarClienteDocumento(_cliente, usuarioModificacion);
+            return _resultado;
+        }
+        public async Task<ResultadoBD> InsertarClienteHistorialPrevio(Cliente_historial_previo _cliente, int usuarioInsercion)
+        {
+            #region Validaciones
+            //Valida el ClienteID
+            if (_cliente.ClienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            if (_cliente.Total_creditos_anteriores < 0)
+            {
+                throw new HttpResponseException(400, "El Total de creditos anteriores no tiene la sintaxis correcta");
+            }
+            if (_cliente.Total_creditos_liquidados < 0)
+            {
+                throw new HttpResponseException(400, "El Total de creditos liquidados no tiene la sintaxis correcta");
+            }
+            if (_cliente.Total_creditos_liquidados < 0)
+            {
+                throw new HttpResponseException(400, "El Total de creditos liquidados no tiene la sintaxis correcta");
+            }
+            if(_cliente.Tiene_comprobantes == true)
+            {
+                if(_cliente.Comprobante_digitalizado.Length == 0)
+                {
+                    throw new HttpResponseException(400, "El Comprobante digitalizado no tiene la sintaxis correcta");
+                }
+                if(_cliente.TipoDocumentoID <=0)
+                {
+                    throw new HttpResponseException(400, "El TipoDocumentoID no tiene la sintaxis correcta");
+                }
+            }
+            //Valida el UsuarioID_insercion
+            if (usuarioInsercion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
+            #endregion
+
+            ResultadoBD _resultado = await _clienteDAL.InsertarClienteHistorialPrevio(_cliente, usuarioInsercion);
+            return _resultado;
+        }
+        public async Task<ResultadoBD> ModificarClienteHistorialPrevio(Cliente_historial_previo _cliente, int usuarioModificacion)
+        {
+            #region Validaciones
+            //Valida el ClienteID
+            if (_cliente.ClienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            if (_cliente.Total_creditos_anteriores < 0)
+            {
+                throw new HttpResponseException(400, "El Total de creditos anteriores no tiene la sintaxis correcta");
+            }
+            if (_cliente.Total_creditos_liquidados < 0)
+            {
+                throw new HttpResponseException(400, "El Total de creditos liquidados no tiene la sintaxis correcta");
+            }
+            if (_cliente.Total_creditos_liquidados < 0)
+            {
+                throw new HttpResponseException(400, "El Total de creditos liquidados no tiene la sintaxis correcta");
+            }
+            if (_cliente.Tiene_comprobantes == true)
+            {
+                if (_cliente.Comprobante_digitalizado.Length == 0)
+                {
+                    throw new HttpResponseException(400, "El Comprobante digitalizado no tiene la sintaxis correcta");
+                }
+                if (_cliente.TipoDocumentoID <= 0)
+                {
+                    throw new HttpResponseException(400, "El TipoDocumentoID no tiene la sintaxis correcta");
+                }
+            }
+            //Valida el UsuarioID_insercion
+            if (usuarioModificacion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
+            #endregion
+
+            ResultadoBD _resultado = await _clienteDAL.ModificarClienteHistorialPrevio(_cliente, usuarioModificacion);
+            return _resultado;
+        }
+        public async Task<ResultadoBD> InsertarClientePerfil(Cliente_perfil _cliente, int usuarioInsercion)
+        {
+            #region Validaciones
+            //Valida el ClienteID
+            if (_cliente.ClienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            if (_cliente.Nivel_estudio < 0)
+            {
+                throw new HttpResponseException(400, "El Nivel de estudio no tiene la sintaxis correcta");
+            }
+            if (_cliente.Area_estudio < 0)
+            {
+                throw new HttpResponseException(400, "El Área de estudio no tiene la sintaxis correcta");
+            }
+            if (_cliente.Area_ocupacion < 0)
+            {
+                throw new HttpResponseException(400, "El Área de ocupación no tiene la sintaxis correcta");
+            }
+            if (_cliente.Carrera_estudio.Length > 128)
+            {
+                throw new HttpResponseException(400, "La Carrera de estudio no tiene la sintaxis correcta");
+            }
+            if (_cliente.Puesto.Length <= 0 || _cliente.Puesto.Length > 128)
+            {
+                throw new HttpResponseException(400, "El Puesto no tiene la sintaxis correcta");
+            }
+            if (_cliente.Empresa.Length <= 0 || _cliente.Empresa.Length > 128)
+            {
+                throw new HttpResponseException(400, "La Empresa no tiene la sintaxis correcta");
+            }
+            if (_cliente.Ingreso_mensual < 0)
+            {
+                throw new HttpResponseException(400, "El Ingreso mensual no tiene la sintaxis correcta");
+            }
+            if (_cliente.Gasto_mensual < 0)
+            {
+                throw new HttpResponseException(400, "El Gasto mensual no tiene la sintaxis correcta");
+            }
+            //Valida el UsuarioID_insercion
+            if (usuarioInsercion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
+            #endregion
+
+            ResultadoBD _resultado = await _clienteDAL.InsertarClientePerfil(_cliente, usuarioInsercion);
+            return _resultado;
+        }
+        public async Task<ResultadoBD> ModificarClientePerfil(Cliente_perfil _cliente, int usuarioModificacion)
+        {
+            #region Validaciones
+            //Valida el ClienteID
+            if (_cliente.ClienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            if (_cliente.Nivel_estudio < 0)
+            {
+                throw new HttpResponseException(400, "El Nivel de estudio no tiene la sintaxis correcta");
+            }
+            if (_cliente.Area_estudio < 0)
+            {
+                throw new HttpResponseException(400, "El Área de estudio no tiene la sintaxis correcta");
+            }
+            if (_cliente.Area_ocupacion < 0)
+            {
+                throw new HttpResponseException(400, "El Área de ocupación no tiene la sintaxis correcta");
+            }
+            if (_cliente.Carrera_estudio.Length > 128)
+            {
+                throw new HttpResponseException(400, "La Carrera de estudio no tiene la sintaxis correcta");
+            }
+            if (_cliente.Puesto.Length <= 0 || _cliente.Puesto.Length > 128)
+            {
+                throw new HttpResponseException(400, "El Puesto no tiene la sintaxis correcta");
+            }
+            if (_cliente.Empresa.Length <= 0 || _cliente.Empresa.Length > 128)
+            {
+                throw new HttpResponseException(400, "La Empresa no tiene la sintaxis correcta");
+            }
+            if (_cliente.Ingreso_mensual < 0)
+            {
+                throw new HttpResponseException(400, "El Ingreso mensual no tiene la sintaxis correcta");
+            }
+            if (_cliente.Gasto_mensual < 0)
+            {
+                throw new HttpResponseException(400, "El Gasto mensual no tiene la sintaxis correcta");
+            }
+            //Valida el UsuarioID_insercion
+            if (usuarioModificacion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
+            #endregion
+
+            ResultadoBD _resultado = await _clienteDAL.ModificarClientePerfil(_cliente, usuarioModificacion);
+            return _resultado;
+        }
+        public async Task<ResultadoBD> InsertarClienteReferencia(Cliente_referencia _cliente, int usuarioInsercion)
+        {
+            #region Validaciones
+            //Valida el ClienteID
+            if (_cliente.ClienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }            
+            if (_cliente.Nombre_completo.Length <= 0 || _cliente.Nombre_completo.Length > 255)
+            {
+                throw new HttpResponseException(400, "El Nombre completo no tiene la sintaxis correcta");
+            }
+            if (_cliente.Telefono_referencia.Length != 10)
+            {
+                throw new HttpResponseException(400, "El Telefono no tiene la sintaxis correcta");
+            }
+            if (_cliente.Telefono_referencia_prefijo.Length <= 0 || _cliente.Telefono_referencia_prefijo.Length > 3)
+            {
+                throw new HttpResponseException(400, "El Prefijo del telefono no tiene la sintaxis correcta");
+            }
+            if (_cliente.Correo_electronico.Length > 64)
+            {
+                throw new HttpResponseException(400, "El Correo electrónico no tiene la sintaxis correcta");
+            }            
+            //Valida el UsuarioID_insercion
+            if (usuarioInsercion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
+            #endregion
+
+            ResultadoBD _resultado = await _clienteDAL.InsertarClienteReferencia(_cliente, usuarioInsercion);
+            return _resultado;
+        }
+        public async Task<ResultadoBD> ModificarClienteReferencia(Cliente_referencia _cliente, int usuarioModificacion)
+        {
+            #region Validaciones
+            if (_cliente.ReferenciaID <= 0)
+            {
+                throw new HttpResponseException(400, "La ReferenciaID no tiene la sintaxis correcta");
+            }
+            //Valida el ClienteID
+            if (_cliente.ClienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            if (_cliente.Nombre_completo.Length <= 0 || _cliente.Nombre_completo.Length > 255)
+            {
+                throw new HttpResponseException(400, "El Nombre completo no tiene la sintaxis correcta");
+            }
+            if (_cliente.Telefono_referencia.Length != 10)
+            {
+                throw new HttpResponseException(400, "El Teléfono no tiene la sintaxis correcta");
+            }
+            if (_cliente.Telefono_referencia_prefijo.Length <= 0 || _cliente.Telefono_referencia_prefijo.Length > 3)
+            {
+                throw new HttpResponseException(400, "El Prefijo del teléfono no tiene la sintaxis correcta");
+            }
+            if (_cliente.Correo_electronico.Length > 64)
+            {
+                throw new HttpResponseException(400, "El Correo electrónico no tiene la sintaxis correcta");
+            }
+            //Valida el UsuarioID_insercion
+            if (usuarioModificacion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
+            #endregion
+
+            ResultadoBD _resultado = await _clienteDAL.ModificarClienteReferencia(_cliente, usuarioModificacion);
+            return _resultado;
+        }
+        public async Task<Cliente> ObtenerClientePorID(int clienteID)
+        {
+            if (clienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            Cliente _clienteEncontrado = await _clienteDAL.ObtenerClientePorID(clienteID);
+            if (_clienteEncontrado.ClienteID == 0)
+            {
+                throw new HttpResponseException(404, "Cliente no encontrado");
+            }
+            return _clienteEncontrado;
+        }
+        public async Task<Cliente_direccion> ObtenerClienteDireccionPorID(int clienteID)
+        {
+            if (clienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            Cliente_direccion _clienteEncontrado = await _clienteDAL.ObtenerClienteDireccionPorID(clienteID);
+            if (_clienteEncontrado.ClienteID == 0)
+            {
+                throw new HttpResponseException(404, "Dirección del cliente no encontrado");
+            }
+            return _clienteEncontrado;
+        }
+        public async Task<List<Cliente_documento>> ObtenerClienteDocumentoPorID(int clienteID)
+        {
+            if (clienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            List<Cliente_documento> _clienteEncontrado = await _clienteDAL.ObtenerClienteDocumentoPorID(clienteID);
+            if (_clienteEncontrado.Count == 0)
+            {
+                throw new HttpResponseException(404, "Documento del cliente no encontrado");
+            }
+            return _clienteEncontrado;
+        }
+        public async Task<Cliente_historial_previo> ObtenerClienteHistorialPrevioPorID(int clienteID)
+        {
+            if (clienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            Cliente_historial_previo _clienteEncontrado = await _clienteDAL.ObtenerClienteHistorialPrevioPorID(clienteID);
+            if (_clienteEncontrado.ClienteID == 0)
+            {
+                throw new HttpResponseException(404, "Historial previo del cliente no encontrado");
+            }
+            return _clienteEncontrado;
+        }
+        public async Task<Cliente_perfil> ObtenerClientePerfilPorID(int clienteID)
+        {
+            if (clienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            Cliente_perfil _clienteEncontrado = await _clienteDAL.ObtenerClientePerfilPorID(clienteID);
+            if (_clienteEncontrado.ClienteID == 0)
+            {
+                throw new HttpResponseException(404, "Perfil del cliente no encontrado");
+            }
+            return _clienteEncontrado;
+        }
+        public async Task<List<Cliente_referencia>> ObtenerClienteReferenciaPorID(int clienteID)
+        {
+            if (clienteID <= 0)
+            {
+                throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
+            }
+            List<Cliente_referencia> _clienteEncontrado = await _clienteDAL.ObtenerClienteReferenciaPorID(clienteID);
+            if (_clienteEncontrado.Count == 0)
+            {
+                throw new HttpResponseException(404, "Referencias del cliente no encontrado");
+            }
+            return _clienteEncontrado;
         }
     }
 }

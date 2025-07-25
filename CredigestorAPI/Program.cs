@@ -96,8 +96,15 @@ builder.Services.AddScoped<IUsuarioDAL, UsuarioDAL>();
 builder.Services.AddScoped<INivel_usuarioDAL, Nivel_usuarioDAL>();
 builder.Services.AddScoped<IMenu_webDAL, Menu_webDAL>();
 builder.Services.AddScoped<IClienteDAL, ClienteDAL>();
-builder.Services.AddScoped<ITipoSexoDAL, TipoSexoDAL>();
-builder.Services.AddScoped<ITipoEstadoCivilDAL, TipoEstadoCivilDAL>();
+builder.Services.AddScoped<ITipo_sexoDAL, Tipo_sexoDAL>();
+builder.Services.AddScoped<ITipo_estado_civilDAL, Tipo_estado_civilDAL>();
+builder.Services.AddScoped<IPaisDAL, PaisDAL>();
+builder.Services.AddScoped<IEstadoDAL, EstadoDAL>();
+builder.Services.AddScoped<IMunicipioDAL, MunicipioDAL>();
+builder.Services.AddScoped<ITipo_area_perfilDAL, Tipo_area_perfilDAL>();
+builder.Services.AddScoped<ITipo_nivel_estudioDAL, Tipo_nivel_estudioDAL>();
+builder.Services.AddScoped<ITipo_documentoDAL, Tipo_documentoDAL>();
+builder.Services.AddScoped<ITipo_archivoDAL, Tipo_archivoDAL>();
 
 //Registrar BLL
 builder.Services.AddScoped<IUsuarioUtils, UsuarioUtils>();
@@ -106,8 +113,15 @@ builder.Services.AddScoped<IUsuarioBLL, UsuarioBLL>();
 builder.Services.AddScoped<INivel_usuarioBLL, Nivel_usuarioBLL>();
 builder.Services.AddScoped<IMenu_webBLL, Menu_webBLL>();
 builder.Services.AddScoped<IClienteBLL, ClienteBLL>();
-builder.Services.AddScoped<ITipoSexoBLL, TipoSexoBLL>();
-builder.Services.AddScoped<ITipoEstadoCivilBLL, TipoEstadoCivilBLL>();
+builder.Services.AddScoped<ITipo_sexoBLL, Tipo_sexoBLL>();
+builder.Services.AddScoped<ITipo_estado_civilBLL, Tipo_estado_civilBLL>();
+builder.Services.AddScoped<IPaisBLL, PaisBLL>();
+builder.Services.AddScoped<IEstadoBLL, EstadoBLL>();
+builder.Services.AddScoped<IMunicipioBLL, MunicipioBLL>();
+builder.Services.AddScoped<ITipo_area_perfilBLL, Tipo_area_perfilBLL>();
+builder.Services.AddScoped<ITipo_nivel_estudioBLL, Tipo_nivel_estudioBLL>();
+builder.Services.AddScoped<ITipo_documentoBLL, Tipo_documentoBLL>();
+builder.Services.AddScoped<ITipo_archivoBLL, Tipo_archivoBLL>();
 
 #nullable restore
 var app = builder.Build();

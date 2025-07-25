@@ -1,13 +1,14 @@
 ﻿using CredigestorAPI.DAL.Interfaces;
+using CredigestorAPI.DAL.Mappers;
 using CredigestorAPI.Models;
 using System.Data;
 
 namespace CredigestorAPI.DAL
 {
-    public class TipoSexoDAL : ITipoSexoDAL
+    public class Tipo_sexoDAL : ITipo_sexoDAL
     {
         private readonly ISqlAuxiliar _sqlAuxiliar;
-        public TipoSexoDAL(ISqlAuxiliar sqlAuxiliar)
+        public Tipo_sexoDAL(ISqlAuxiliar sqlAuxiliar)
         {
             _sqlAuxiliar = sqlAuxiliar;
         }
@@ -20,7 +21,7 @@ namespace CredigestorAPI.DAL
                 return _lista;
             else
             {
-                _lista = Tipo_sexo.ObtenerListaDesdeTabla(dt);
+                _lista = Tipo_sexoMapper.ObtenerListaDataTable(dt);
                 return _lista;
             }
         }

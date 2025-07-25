@@ -2,8 +2,8 @@
 
 namespace CredigestorAPI.DAL.Interfaces
 {
-    public interface ITipoSexoDAL
+    public interface IPaisDAL
     {
-        Task<List<Tipo_sexo>> ObtenerCatalogoActivo();
+        Task<List<Pais>> ObtenerCatalogoActivo();
     }
 }

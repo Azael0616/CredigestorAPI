@@ -1,13 +1,14 @@
 ﻿using CredigestorAPI.DAL.Interfaces;
+using CredigestorAPI.DAL.Mappers;
 using CredigestorAPI.Models;
 using System.Data;
 
 namespace CredigestorAPI.DAL
 {
-    public class TipoEstadoCivilDAL : ITipoEstadoCivilDAL
+    public class Tipo_estado_civilDAL : ITipo_estado_civilDAL
     {
         private readonly ISqlAuxiliar _sqlAuxiliar;
-        public TipoEstadoCivilDAL(ISqlAuxiliar sqlAuxiliar)
+        public Tipo_estado_civilDAL(ISqlAuxiliar sqlAuxiliar)
         {
             _sqlAuxiliar = sqlAuxiliar;
         }
@@ -20,7 +21,7 @@ namespace CredigestorAPI.DAL
                 return _lista;
             else
             {
-                _lista = Tipo_estado_civil.ObtenerListaDesdeTabla(dt);
+                _lista = Tipo_estado_civilMapper.ObtenerListaDataTable(dt);
                 return _lista;
             }
         }

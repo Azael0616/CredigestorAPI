@@ -3,7 +3,6 @@ using CredigestorAPI.DAL.Interfaces;
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.DTO;
 using CredigestorAPI.Models.Utils;
-using System.Data;
 
 namespace CredigestorAPI.BLL
 {
@@ -92,6 +91,11 @@ namespace CredigestorAPI.BLL
             {
                 throw new HttpResponseException(400, "El nivel de usuario no tiene la sintaxis correcta");
             }
+            //Valida el UsuarioID_insercion
+            if (usuarioInsercion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
             #endregion
 
             ResultadoBD _resultado = await _usuarioDAL.InsertarUsuario(_usuario,usuarioInsercion);
@@ -166,6 +170,11 @@ namespace CredigestorAPI.BLL
             {
                 throw new HttpResponseException(400, "El nivel de usuario no tiene la sintaxis correcta");
             }
+            //Valida el UsuarioID_insercion
+            if (usuarioModificacion <= 0)
+            {
+                throw new HttpResponseException(400, "El UsuarioID no tiene la sintaxis correcta");
+            }
             #endregion
 
             ResultadoBD _resultado = await _usuarioDAL.ModificarUsuario(_usuario, usuarioModificacion);
@@ -173,8 +182,7 @@ namespace CredigestorAPI.BLL
         }
         public async Task<List<UsuarioDTO>> ObtenerUsuarios()
         {
-            List<UsuarioDTO> _lista = await _usuarioDAL.ObtenerUsuarios();
-            return _lista;
+            return await _usuarioDAL.ObtenerUsuarios();            
         }
         public async Task<UsuarioEncontrado> ObtenerUsuarioPorNombreUsuario(UsuarioLogin _usuario)
         {

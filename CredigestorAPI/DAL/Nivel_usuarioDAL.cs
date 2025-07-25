@@ -1,4 +1,5 @@
 ﻿using CredigestorAPI.DAL.Interfaces;
+using CredigestorAPI.DAL.Mappers;
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.DTO;
 using System.Data;
@@ -25,7 +26,7 @@ namespace CredigestorAPI.DAL
                 return _lista;
             else
             {
-                _lista = Nivel_usuario.ObtenerListaDesdeTabla(dt);
+                _lista = Nivel_usuarioMapper.ObtenerListaDataTable(dt);
                 return _lista;
             }
         }

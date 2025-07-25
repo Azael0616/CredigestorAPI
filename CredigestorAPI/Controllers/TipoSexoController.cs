@@ -1,5 +1,4 @@
-﻿using CredigestorAPI.BLL;
-using CredigestorAPI.BLL.Interfaces;
+﻿using CredigestorAPI.BLL.Interfaces;
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -12,8 +11,8 @@ namespace CredigestorAPI.Controllers
     [Route("[controller]")]
     public class TipoSexoController : ControllerBase
     {
-        private readonly ITipoSexoBLL _tipoSexoBLL;
-        public TipoSexoController(ITipoSexoBLL tipoSexoBLL)
+        private readonly ITipo_sexoBLL _tipoSexoBLL;
+        public TipoSexoController(ITipo_sexoBLL tipoSexoBLL)
         {
             _tipoSexoBLL = tipoSexoBLL;
         }

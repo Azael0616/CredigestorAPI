@@ -1,5 +1,4 @@
-﻿using CredigestorAPI.BLL;
-using CredigestorAPI.BLL.Interfaces;
+﻿using CredigestorAPI.BLL.Interfaces;
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -12,8 +11,8 @@ namespace CredigestorAPI.Controllers
     [Route("[controller]")]
     public class TipoEstadoCivilController : ControllerBase
     {
-        private readonly ITipoEstadoCivilBLL _tipoEstadoCivilBLL;
-        public TipoEstadoCivilController(ITipoEstadoCivilBLL tipoEstadoCivilBLL)
+        private readonly ITipo_estado_civilBLL _tipoEstadoCivilBLL;
+        public TipoEstadoCivilController(ITipo_estado_civilBLL tipoEstadoCivilBLL)
         {
             _tipoEstadoCivilBLL = tipoEstadoCivilBLL;
         }
