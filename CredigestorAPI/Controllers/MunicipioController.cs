@@ -1,4 +1,5 @@
-﻿using CredigestorAPI.BLL.Interfaces;
+﻿using CredigestorAPI.BLL;
+using CredigestorAPI.BLL.Interfaces;
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -9,24 +10,24 @@ namespace CredigestorAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TipoSexoController : ControllerBase
+    public class MunicipioController : ControllerBase
     {
-        private readonly ITipo_sexoBLL _tipoSexoBLL;
-        public TipoSexoController(ITipo_sexoBLL tipoSexoBLL)
+        private readonly IMunicipioBLL _municipioBLL;
+        public MunicipioController(IMunicipioBLL municipioBLL)
         {
-            _tipoSexoBLL = tipoSexoBLL;
+            _municipioBLL = municipioBLL;
         }
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [SwaggerOperation(Summary = "Obtiene el catalogo de tipo de sexo")]
-        [HttpGet("ObtenerCatalogoActivo")]
-        public async Task<IActionResult> ObtenerCatalogoActivo()
+        [SwaggerOperation(Summary = "Obtiene un catálogo con los municipios activos a partir del ID del estado")]
+        [HttpGet("ObtenerCatalogoActivo/{estadoID}")]
+        public async Task<IActionResult> ObtenerCatalogoActivo(int estadoID)
         {
             try
             {
-                List<Tipo_sexo> _lista = await _tipoSexoBLL.ObtenerCatalogoActivo();
+                List<Municipio> _lista = await _municipioBLL.ObtenerCatalogoActivo(estadoID);
                 return StatusCode(200, _lista);
             }
             catch (HttpResponseException ex)

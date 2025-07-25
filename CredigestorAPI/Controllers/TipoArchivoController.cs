@@ -1,4 +1,5 @@
-﻿using CredigestorAPI.BLL.Interfaces;
+﻿using CredigestorAPI.BLL;
+using CredigestorAPI.BLL.Interfaces;
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -9,24 +10,24 @@ namespace CredigestorAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TipoSexoController : ControllerBase
+    public class TipoArchivoController : ControllerBase
     {
-        private readonly ITipo_sexoBLL _tipoSexoBLL;
-        public TipoSexoController(ITipo_sexoBLL tipoSexoBLL)
+        private readonly ITipo_archivoBLL _tipoArchivoBLL;
+        public TipoArchivoController(ITipo_archivoBLL tipoArchivoBLL)
         {
-            _tipoSexoBLL = tipoSexoBLL;
+            _tipoArchivoBLL = tipoArchivoBLL;
         }
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [SwaggerOperation(Summary = "Obtiene el catalogo de tipo de sexo")]
+        [SwaggerOperation(Summary = "Obtiene todos los tipo de archivo activo")]
         [HttpGet("ObtenerCatalogoActivo")]
         public async Task<IActionResult> ObtenerCatalogoActivo()
         {
             try
             {
-                List<Tipo_sexo> _lista = await _tipoSexoBLL.ObtenerCatalogoActivo();
+                List<Tipo_archivo> _lista = await _tipoArchivoBLL.ObtenerCatalogoActivo();
                 return StatusCode(200, _lista);
             }
             catch (HttpResponseException ex)

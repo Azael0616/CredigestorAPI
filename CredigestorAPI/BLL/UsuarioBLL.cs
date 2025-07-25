@@ -3,7 +3,6 @@ using CredigestorAPI.DAL.Interfaces;
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.DTO;
 using CredigestorAPI.Models.Utils;
-using System.Data;
 
 namespace CredigestorAPI.BLL
 {
@@ -173,8 +172,7 @@ namespace CredigestorAPI.BLL
         }
         public async Task<List<UsuarioDTO>> ObtenerUsuarios()
         {
-            List<UsuarioDTO> _lista = await _usuarioDAL.ObtenerUsuarios();
-            return _lista;
+            return await _usuarioDAL.ObtenerUsuarios();            
         }
         public async Task<UsuarioEncontrado> ObtenerUsuarioPorNombreUsuario(UsuarioLogin _usuario)
         {

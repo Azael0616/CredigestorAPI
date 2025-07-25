@@ -15,8 +15,7 @@ namespace CredigestorAPI.BLL
         //Obtiene los menu web disponible para un usuario según su nivel de usuario
         public async Task<List<Menu_web>> ObtenerMenuWebPorUsuario(int usuarioID)
         {
-            List<Menu_web> _lista = await _menuWebDAL.ObtenerMenuWebPorUsuario(usuarioID);
-            return _lista;
+            return await _menuWebDAL.ObtenerMenuWebPorUsuario(usuarioID);            
         }
     }
 }

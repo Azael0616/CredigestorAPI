@@ -1,5 +1,4 @@
-﻿using CredigestorAPI.BLL;
-using CredigestorAPI.BLL.Interfaces;
+﻿using CredigestorAPI.BLL.Interfaces;
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.DTO;
 using CredigestorAPI.Models.Utils;

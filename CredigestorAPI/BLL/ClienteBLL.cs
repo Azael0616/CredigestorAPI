@@ -19,8 +19,7 @@ namespace CredigestorAPI.BLL
         }
         public async Task<List<ClienteDTO>> ObtenerClientes()
         {
-            List<ClienteDTO> _lista = await _clienteDAL.ObtenerClientes();
-            return _lista;
+            return await _clienteDAL.ObtenerClientes();            
         }
         public async Task<Cliente> ObtenerClientePorID(int clienteID)
         {

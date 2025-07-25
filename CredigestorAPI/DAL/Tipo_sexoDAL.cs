@@ -5,10 +5,10 @@ using System.Data;
 
 namespace CredigestorAPI.DAL
 {
-    public class TipoSexoDAL : ITipoSexoDAL
+    public class Tipo_sexoDAL : ITipo_sexoDAL
     {
         private readonly ISqlAuxiliar _sqlAuxiliar;
-        public TipoSexoDAL(ISqlAuxiliar sqlAuxiliar)
+        public Tipo_sexoDAL(ISqlAuxiliar sqlAuxiliar)
         {
             _sqlAuxiliar = sqlAuxiliar;
         }

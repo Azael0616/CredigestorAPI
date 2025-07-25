@@ -9,24 +9,24 @@ namespace CredigestorAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TipoSexoController : ControllerBase
+    public class EstadoController : ControllerBase
     {
-        private readonly ITipo_sexoBLL _tipoSexoBLL;
-        public TipoSexoController(ITipo_sexoBLL tipoSexoBLL)
+        private readonly IEstadoBLL _estadoBLL;
+        public EstadoController(IEstadoBLL estadoBLL)
         {
-            _tipoSexoBLL = tipoSexoBLL;
+            _estadoBLL = estadoBLL;
         }
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [SwaggerOperation(Summary = "Obtiene el catalogo de tipo de sexo")]
-        [HttpGet("ObtenerCatalogoActivo")]
-        public async Task<IActionResult> ObtenerCatalogoActivo()
+        [SwaggerOperation(Summary = "Obtiene un catálogo con los estados activos a partir del ID del país")]
+        [HttpGet("ObtenerCatalogoActivo/{paisID}")]
+        public async Task<IActionResult> ObtenerCatalogoActivo(int paisID)
         {
             try
             {
-                List<Tipo_sexo> _lista = await _tipoSexoBLL.ObtenerCatalogoActivo();
+                List<Estado> _lista = await _estadoBLL.ObtenerCatalogoActivo(paisID);
                 return StatusCode(200, _lista);
             }
             catch (HttpResponseException ex)

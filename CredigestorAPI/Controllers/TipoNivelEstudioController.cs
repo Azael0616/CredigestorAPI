@@ -9,24 +9,24 @@ namespace CredigestorAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TipoSexoController : ControllerBase
+    public class TipoNivelEstudioController : ControllerBase
     {
-        private readonly ITipo_sexoBLL _tipoSexoBLL;
-        public TipoSexoController(ITipo_sexoBLL tipoSexoBLL)
+        private readonly ITipo_nivel_estudioBLL _tipoNivelEstudioBLL;
+        public TipoNivelEstudioController(ITipo_nivel_estudioBLL tipoNivelEstudioBLL)
         {
-            _tipoSexoBLL = tipoSexoBLL;
+            _tipoNivelEstudioBLL = tipoNivelEstudioBLL;
         }
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [SwaggerOperation(Summary = "Obtiene el catalogo de tipo de sexo")]
+        [SwaggerOperation(Summary = "Obtiene el catalogo de tipo de nivel de estudios")]
         [HttpGet("ObtenerCatalogoActivo")]
         public async Task<IActionResult> ObtenerCatalogoActivo()
         {
             try
             {
-                List<Tipo_sexo> _lista = await _tipoSexoBLL.ObtenerCatalogoActivo();
+                List<Tipo_nivel_estudio> _lista = await _tipoNivelEstudioBLL.ObtenerCatalogoActivo();
                 return StatusCode(200, _lista);
             }
             catch (HttpResponseException ex)
@@ -37,6 +37,6 @@ namespace CredigestorAPI.Controllers
                 _resultado.Code = ex.Codigo;
                 return StatusCode(ex.Codigo, _resultado);
             }
-        }
+        }        
     }
 }

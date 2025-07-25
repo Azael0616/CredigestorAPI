@@ -1,4 +1,5 @@
-﻿using CredigestorAPI.BLL.Interfaces;
+﻿using CredigestorAPI.BLL;
+using CredigestorAPI.BLL.Interfaces;
 using CredigestorAPI.Models;
 using CredigestorAPI.Models.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -9,24 +10,24 @@ namespace CredigestorAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TipoSexoController : ControllerBase
+    public class TipoDocumentoController : ControllerBase
     {
-        private readonly ITipo_sexoBLL _tipoSexoBLL;
-        public TipoSexoController(ITipo_sexoBLL tipoSexoBLL)
+        private readonly ITipo_documentoBLL _tipoDocumentoBLL;
+        public TipoDocumentoController(ITipo_documentoBLL tipoDocumentoBLL)
         {
-            _tipoSexoBLL = tipoSexoBLL;
+            _tipoDocumentoBLL = tipoDocumentoBLL;
         }
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [SwaggerOperation(Summary = "Obtiene el catalogo de tipo de sexo")]
-        [HttpGet("ObtenerCatalogoActivo")]
-        public async Task<IActionResult> ObtenerCatalogoActivo()
+        [SwaggerOperation(Summary = "Obtiene todos los tipo de documento activo")]
+        [HttpGet("ObtenerCatalogoActivo/{formularioID}")]
+        public async Task<IActionResult> ObtenerCatalogoActivo(int formularioID)
         {
             try
             {
-                List<Tipo_sexo> _lista = await _tipoSexoBLL.ObtenerCatalogoActivo();
+                List<Tipo_documento> _lista = await _tipoDocumentoBLL.ObtenerCatalogoActivo(formularioID);
                 return StatusCode(200, _lista);
             }
             catch (HttpResponseException ex)
