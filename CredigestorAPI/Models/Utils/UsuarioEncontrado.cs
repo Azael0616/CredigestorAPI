@@ -13,14 +13,6 @@ namespace CredigestorAPI.Models.Utils
             this.UsuarioID = usuarioid;
             this.Nombre_usuario = nombre_usuario;
             this.Password = password;
-        }
-        public UsuarioEncontrado(DataRow dt)
-        {
-#nullable disable            
-            this.UsuarioID = (dt.Table.Columns.Contains("UsuarioID") && dt["UsuarioID"] != DBNull.Value) ? int.Parse(dt["UsuarioID"].ToString()) : 0;
-            this.Nombre_usuario = dt.Table.Columns.Contains("Nombre_usuario") && dt["Nombre_usuario"] != DBNull.Value ? dt["Nombre_usuario"].ToString() : "";
-            this.Password = dt.Table.Columns.Contains("PasswordHash") && dt["PasswordHash"] != DBNull.Value ? dt["PasswordHash"].ToString() : "";
-#nullable restore
-        }
+        }        
     }
 }

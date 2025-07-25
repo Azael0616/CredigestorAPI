@@ -168,7 +168,7 @@ namespace CredigestorAPI.DAL
                 }
                 else
                 {
-                    _usuarioLogin = new UsuarioEncontrado(dt);   
+                    _usuarioLogin = UsuarioEncontradoMapper.ObtenerObjetoDataRow(dt);
                 }
             }
 #nullable enable
@@ -190,7 +190,7 @@ namespace CredigestorAPI.DAL
             }
             else
             {
-                _usuarioSesion = new UsuarioSesion(dt);
+                _usuarioSesion = UsuarioSessionMapper.ObtenerObjetoDataRow(dt);
             }
 #nullable enable
             return _usuarioSesion;
