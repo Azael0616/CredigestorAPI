@@ -19,7 +19,8 @@ namespace CredigestorAPI.DAL.Mappers
                 Colonia = (dt.Table.Columns.Contains("Colonia") && dt["Colonia"] != DBNull.Value) ? dt["Colonia"].ToString() : "",
                 PaisID = (dt.Table.Columns.Contains("PaisID") && dt["PaisID"] != DBNull.Value) ? int.Parse(dt["PaisID"].ToString()) : 0,
                 EstadoID = (dt.Table.Columns.Contains("EstadoID") && dt["EstadoID"] != DBNull.Value) ? int.Parse(dt["EstadoID"].ToString()) : 0,
-                MunicipioID = (dt.Table.Columns.Contains("MunicipioID") && dt["MunicipioID"] != DBNull.Value) ? int.Parse(dt["MunicipioID"].ToString()) : 0
+                MunicipioID = (dt.Table.Columns.Contains("MunicipioID") && dt["MunicipioID"] != DBNull.Value) ? int.Parse(dt["MunicipioID"].ToString()) : 0,
+                Referencia_casa = (dt.Table.Columns.Contains("Referencia_casa") && dt["Referencia_casa"] != DBNull.Value) ? dt["Referencia_casa"].ToString() : "",
             };            
 #nullable restore
         }

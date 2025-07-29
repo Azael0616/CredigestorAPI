@@ -552,6 +552,8 @@ namespace CredigestorAPI.DAL
             var parameters = new Dictionary<string, object>
             {
                 { "@CURP", _cliente.CURP.Trim().ToUpper() },
+                { "@RFC", _cliente.RFC.Trim().ToUpper() },
+                { "@Clave_elector", _cliente.Clave_elector.Trim().ToUpper() },
                 { "@ClienteID", _cliente.ClienteID },
             };
 

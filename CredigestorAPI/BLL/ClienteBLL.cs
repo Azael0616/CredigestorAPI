@@ -28,13 +28,7 @@ namespace CredigestorAPI.BLL
             if(_cliente.CURP.Length != 18)
             {
                 throw new HttpResponseException(400, "La CURP no tiene la sintaxis correcta");
-            }
-            //Validar si el CURP ya existe
-            ResultadoBD _validacion = await _clienteDAL.ValidarDuplicado(_cliente);
-            if (_validacion.Error)
-            {
-                throw new HttpResponseException(409, "La CURP ingresada ya existe");
-            }
+            }            
             if (_cliente.RFC.Length <12 || _cliente.RFC.Length>13)
             {
                 throw new HttpResponseException(400, "El RFC no tiene la sintaxis correcta");
@@ -42,6 +36,12 @@ namespace CredigestorAPI.BLL
             if (_cliente.Clave_elector.Length != 18)
             {
                 throw new HttpResponseException(400, "La Clave de elector no tiene la sintaxis correcta");
+            }
+            //Validar si el CURP|RFC|Clave_elector ya existe
+            ResultadoBD _validacion = await _clienteDAL.ValidarDuplicado(_cliente);
+            if (_validacion.Error)
+            {
+                throw new HttpResponseException(409, _validacion.ErrorDesc);
             }
             //Validar el nombre
             if (string.IsNullOrWhiteSpace(_cliente.Nombre) || _cliente.Nombre?.Trim().Length > 64)
@@ -623,10 +623,6 @@ namespace CredigestorAPI.BLL
                 throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
             }
             Cliente _clienteEncontrado = await _clienteDAL.ObtenerClientePorID(clienteID);
-            if (_clienteEncontrado.ClienteID == 0)
-            {
-                throw new HttpResponseException(404, "Cliente no encontrado");
-            }
             return _clienteEncontrado;
         }
         public async Task<Cliente_direccion> ObtenerClienteDireccionPorID(int clienteID)
@@ -635,11 +631,7 @@ namespace CredigestorAPI.BLL
             {
                 throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
             }
-            Cliente_direccion _clienteEncontrado = await _clienteDAL.ObtenerClienteDireccionPorID(clienteID);
-            if (_clienteEncontrado.ClienteID == 0)
-            {
-                throw new HttpResponseException(404, "Dirección del cliente no encontrado");
-            }
+            Cliente_direccion _clienteEncontrado = await _clienteDAL.ObtenerClienteDireccionPorID(clienteID);            
             return _clienteEncontrado;
         }
         public async Task<List<Cliente_documento>> ObtenerClienteDocumentoPorID(int clienteID)
@@ -649,10 +641,6 @@ namespace CredigestorAPI.BLL
                 throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
             }
             List<Cliente_documento> _clienteEncontrado = await _clienteDAL.ObtenerClienteDocumentoPorID(clienteID);
-            if (_clienteEncontrado.Count == 0)
-            {
-                throw new HttpResponseException(404, "Documento del cliente no encontrado");
-            }
             return _clienteEncontrado;
         }
         public async Task<Cliente_historial_previo> ObtenerClienteHistorialPrevioPorID(int clienteID)
@@ -662,10 +650,6 @@ namespace CredigestorAPI.BLL
                 throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
             }
             Cliente_historial_previo _clienteEncontrado = await _clienteDAL.ObtenerClienteHistorialPrevioPorID(clienteID);
-            if (_clienteEncontrado.ClienteID == 0)
-            {
-                throw new HttpResponseException(404, "Historial previo del cliente no encontrado");
-            }
             return _clienteEncontrado;
         }
         public async Task<Cliente_perfil> ObtenerClientePerfilPorID(int clienteID)
@@ -675,10 +659,6 @@ namespace CredigestorAPI.BLL
                 throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
             }
             Cliente_perfil _clienteEncontrado = await _clienteDAL.ObtenerClientePerfilPorID(clienteID);
-            if (_clienteEncontrado.ClienteID == 0)
-            {
-                throw new HttpResponseException(404, "Perfil del cliente no encontrado");
-            }
             return _clienteEncontrado;
         }
         public async Task<List<Cliente_referencia>> ObtenerClienteReferenciaPorID(int clienteID)
@@ -688,10 +668,6 @@ namespace CredigestorAPI.BLL
                 throw new HttpResponseException(400, "El ClienteID no tiene la sintaxis correcta");
             }
             List<Cliente_referencia> _clienteEncontrado = await _clienteDAL.ObtenerClienteReferenciaPorID(clienteID);
-            if (_clienteEncontrado.Count == 0)
-            {
-                throw new HttpResponseException(404, "Referencias del cliente no encontrado");
-            }
             return _clienteEncontrado;
         }
     }
