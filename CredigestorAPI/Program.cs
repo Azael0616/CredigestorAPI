@@ -142,11 +142,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExcepcionMiddleware>(); //Manejo de errores
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseMiddleware<ExcepcionMiddleware>(); //Manejo de errores
 
 app.MapControllers(); // Importante para que funcionen los controladores
 

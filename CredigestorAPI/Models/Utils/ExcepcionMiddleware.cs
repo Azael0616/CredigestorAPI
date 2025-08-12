@@ -19,19 +19,26 @@
             {
                 context.Response.StatusCode = ex.Codigo;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsJsonAsync(ex.Mensaje);
+                var resultado = new ResultadoBD
+                {
+                    Error = true,
+                    ErrorDesc = ex.Mensaje,
+                    Icon = ex.Icono,
+                    Code = ex.Codigo                    
+                };
+                await context.Response.WriteAsJsonAsync(resultado);
             }
             catch (Exception ex)
             {
                 context.Response.StatusCode = 500;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsJsonAsync(new
+                await context.Response.WriteAsJsonAsync(new ResultadoBD
                 {
-                    error = true,
-                    errorDesc = "Error interno del servidor",
-                    icon = "error",
-                    code = 500,
-                    detalle = ex.Message
+                    Error = true,
+                    ErrorDesc = "Error interno del servidor",
+                    Icon = "error",
+                    Code = 500,
+                    Detalle = ex.Message
                 });
             }
         }

@@ -29,7 +29,7 @@ namespace CredigestorAPI.BLL
             ResultadoBD _validacion = await _usuarioDAL.ValidarDuplicado(_usuario);
             if (_validacion.Error)
             {
-                throw new HttpResponseException(409, "Nombre de usuario duplicado");
+                throw new HttpResponseException(409, _validacion.ErrorDesc);
             }
             //Validar contraseña segura
             if (!_usuarioUtils.ValidarPasswordSegura(_usuario.PasswordHash))
@@ -118,7 +118,7 @@ namespace CredigestorAPI.BLL
             ResultadoBD _validacion = await _usuarioDAL.ValidarDuplicado(_usuario);
             if (_validacion.Error)
             {
-                throw new HttpResponseException(409, "Nombre de usuario duplicado");
+                throw new HttpResponseException(409, _validacion.ErrorDesc);
             }            
             //Validar el nombre
             if (string.IsNullOrWhiteSpace(_usuario.Nombre) || _usuario.Nombre?.Trim().Length > 64)
